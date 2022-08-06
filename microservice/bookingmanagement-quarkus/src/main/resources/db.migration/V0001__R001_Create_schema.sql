@@ -1,5 +1,3 @@
---TODO
-
 CREATE SEQUENCE HIBERNATE_SEQUENCE START WITH 100000;
 
 -- *** Table ***
@@ -28,8 +26,8 @@ CREATE TABLE Booking (
   idOrder BIGINT,
   assistants INTEGER,
   CONSTRAINT PK_Booking PRIMARY KEY(id),
-  CONSTRAINT FK_Booking_idUser FOREIGN KEY(idUser) REFERENCES User(id) NOCHECK,
-  CONSTRAINT FK_Booking_idTable FOREIGN KEY(idTable) REFERENCES "Table"(id) NOCHECK
+--  CONSTRAINT FK_Booking_idUser FOREIGN KEY(idUser) REFERENCES User(id) NOCHECK,
+--  CONSTRAINT FK_Booking_idTable FOREIGN KEY(idTable) REFERENCES "Table"(id) NOCHECK
 );
 
 -- *** InvitedGuest ***

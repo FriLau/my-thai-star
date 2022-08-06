@@ -1,4 +1,4 @@
---TODO
+
 INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (0, 1, 4);
 INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (1, 1, 4);
 INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (2, 1, 4);
