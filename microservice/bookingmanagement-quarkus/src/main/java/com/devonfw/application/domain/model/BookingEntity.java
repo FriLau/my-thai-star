@@ -1,7 +1,6 @@
 package com.devonfw.application.domain.model;
 
 import com.devonfw.application.general.domain.model.ApplicationPersistenceEntity;
-import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -10,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 
 
 import java.time.Instant;
@@ -51,11 +52,11 @@ public class BookingEntity extends ApplicationPersistenceEntity {
     private List<InvitedGuestEntity> invitedGuests;
 
     //TODO depe
+    // TODO check if needed
     //private List<OrderEntity> orders;
 
-// TODO
-//    @Min(value = 1, message = "Assistants must be greater than 0")
-//    @Digits(integer = 2, fraction = 0)
+    @Min(value = 1, message = "Assistants must be greater than 0")
+    @Digits(integer = 2, fraction = 0)
     private Integer assistants;
 
     public BookingEntity() {

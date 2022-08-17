@@ -1,12 +1,13 @@
 package com.devonfw.application.service.rest.mapper;
 
-import com.devonfw.application.domain.model.BookingEntity;
-import com.devonfw.application.service.rest.model.BookingDto;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
-import java.util.List;
+import com.devonfw.application.domain.model.BookingEntity;
+import com.devonfw.application.service.rest.model.BookingDto;
 
 @Mapper(componentModel ="cdi")
 public interface BookingMapper {

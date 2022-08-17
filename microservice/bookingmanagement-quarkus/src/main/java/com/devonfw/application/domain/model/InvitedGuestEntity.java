@@ -9,8 +9,37 @@ import java.time.Instant;
 
 @Entity
 @Setter
-//@Table(name = "InvitedGuest")
+@Table(name = "InvitedGuest")
 public class InvitedGuestEntity extends ApplicationPersistenceEntity {
+
+    private BookingEntity booking;
+
+    private String guestToken;
+
+    private String email;
+
+    private Boolean accepted;
+
+    private Instant modificationDate;
+
+    //TODO depe
+    //private OrderEntity order;
+    private Long idOrder;
+
+    public InvitedGuestEntity() {
+
+        super();
+    }
+
+    /**
+     * @return booking
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idBooking")
+    public BookingEntity getBooking() {
+
+        return this.booking;
+    }
 
     public String getGuestToken() {
         return guestToken;
@@ -28,32 +57,8 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
         return modificationDate;
     }
 
-    private BookingEntity booking;
-
-    private String guestToken;
-
-    private String email;
-
-    private Boolean accepted;
-
-    private Instant modificationDate;
-
-    //TODO depe
-    //private OrderEntity order;
-
-    public InvitedGuestEntity() {
-
-        super();
-    }
-
-    /**
-     * @return booking
-     */
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idBooking")
-    public BookingEntity getBooking() {
-
-        return this.booking;
+    public Long getIdOrder() {
+        return idOrder;
     }
 
 }

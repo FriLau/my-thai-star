@@ -1,14 +1,13 @@
 package com.devonfw.application.service.rest.mapper;
 
-import com.devonfw.application.domain.model.BookingEntity;
-import com.devonfw.application.domain.model.TableEntity;
-import com.devonfw.application.service.rest.model.BookingDto;
-import com.devonfw.application.service.rest.model.TableDto;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
-import java.util.List;
+import com.devonfw.application.domain.model.TableEntity;
+import com.devonfw.application.service.rest.model.TableDto;
 
 @Mapper(componentModel ="cdi")
 public interface TableMapper {
