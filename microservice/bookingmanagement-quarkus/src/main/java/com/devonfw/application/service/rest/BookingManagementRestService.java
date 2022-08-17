@@ -38,24 +38,15 @@ import static javax.ws.rs.core.Response.status;
 //TODO Add missing functions
 
 @Path("/bookingmanagement/v1")
-@ApplicationScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class BookingManagementRestService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BookingManagementRestService.class);
-
     @Context
     UriInfo uriInfo;
 
-
+    @Inject
     BookingManagement bookingManagement;
-
-    BookingManagementRestService(BookingManagement bookingManagement)
-    {
-        this.bookingManagement = bookingManagement;
-    }
-
 
     // Test to see all bookings
     @GET
