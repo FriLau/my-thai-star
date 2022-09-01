@@ -15,7 +15,6 @@ import java.time.Instant;
 @Getter
 @Setter
 public class BookingSearchCriteriaDto extends AbstractSearchCriteriaDto {
-    //TODO
 
     private static final long serialVersionUID = 1L;
 

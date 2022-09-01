@@ -1,6 +1,7 @@
 package com.devonfw.application.domain.model;
 
 import com.devonfw.application.general.domain.model.ApplicationPersistenceEntity;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -41,29 +42,15 @@ public class BookingEntity extends ApplicationPersistenceEntity {
 
     private TableEntity table;
 
-    //TODO depe
-    //private OrderEntity order;
     private Long idOrder;
 
-    //TODO depe
-    //private UserEntity user;
     private Long idUser;
 
     private List<InvitedGuestEntity> invitedGuests;
 
-    //TODO depe
-    // TODO check if needed
-    //private List<OrderEntity> orders;
-
     @Min(value = 1, message = "Assistants must be greater than 0")
     @Digits(integer = 2, fraction = 0)
     private Integer assistants;
-
-    public BookingEntity() {
-
-        super();
-        this.canceled = false;
-    }
 
     public String getName() {
         return name;
@@ -101,18 +88,6 @@ public class BookingEntity extends ApplicationPersistenceEntity {
         return bookingType;
     }
 
-    public Long getIdOrder() {
-        return idOrder;
-    }
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public Integer getAssistants() {
-        return assistants;
-    }
-
     /**
      * @return table
      */
@@ -123,6 +98,14 @@ public class BookingEntity extends ApplicationPersistenceEntity {
         return this.table;
     }
 
+    public Long getIdOrder() {
+        return idOrder;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
     /**
      * @return invitedGuests
      */
@@ -130,5 +113,9 @@ public class BookingEntity extends ApplicationPersistenceEntity {
     public List<InvitedGuestEntity> getInvitedGuests() {
 
         return this.invitedGuests;
+    }
+
+    public Integer getAssistants() {
+        return assistants;
     }
 }

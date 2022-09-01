@@ -22,8 +22,6 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
 
     private Instant modificationDate;
 
-    //TODO depe
-    //private OrderEntity order;
     private Long idOrder;
 
     public InvitedGuestEntity() {

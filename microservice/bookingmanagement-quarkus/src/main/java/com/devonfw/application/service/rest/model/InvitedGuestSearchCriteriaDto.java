@@ -15,7 +15,6 @@ import java.time.Instant;
 @Setter
 public class InvitedGuestSearchCriteriaDto extends AbstractSearchCriteriaDto {
 
-    //TODO
     private static final long serialVersionUID = 1L;
 
     private Long bookingId;
@@ -27,6 +26,8 @@ public class InvitedGuestSearchCriteriaDto extends AbstractSearchCriteriaDto {
     private Boolean accepted;
 
     private Instant modificationDate;
+
+    private Long idOrder;
 
     private StringSearchConfigTo guestTokenOption;
 

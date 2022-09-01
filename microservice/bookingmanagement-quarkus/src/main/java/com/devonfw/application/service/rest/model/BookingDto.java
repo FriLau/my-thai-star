@@ -25,7 +25,6 @@ import java.util.List;
 @AllArgsConstructor
 public class  BookingDto extends AbstractDto {
 
-    //TODO: Check if needed
     @NotNull
     private String name;
 
@@ -42,30 +41,21 @@ public class  BookingDto extends AbstractDto {
     private Instant creationDate;
 
     @NotNull
-//    @EmailExtended
     private String email;
 
     private Boolean canceled;
 
     private BookingType bookingType;
 
-    private Long orderId;
-
-    private Integer assistants;
-
-    private Long userId;
-
     private TableDto table;
+
+    private Long idOrder;
+
+    private Long idUser;
 
     private List<InvitedGuestDto> invitedGuests;
 
-    //TODO depe
-    //private OrderEto order;
+    private Integer assistants;
 
-    //TODO depe
-    //private List<OrderEto> orders;
-
-    //TODO depe
-    //private UserEto user;
 
 }

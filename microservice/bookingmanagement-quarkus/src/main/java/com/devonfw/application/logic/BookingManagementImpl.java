@@ -151,6 +151,7 @@ public class BookingManagementImpl implements BookingManagement{
     }
 
     private BookingEntity saveBooking(BookingEntity bookingEntity) {
+
         Objects.requireNonNull(bookingEntity, "Booking object cant be null");
 
         BookingEntity resultEntity = getBookingDao().save(bookingEntity);

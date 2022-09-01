@@ -5,6 +5,5 @@ import com.devonfw.application.service.rest.model.TableSearchCriteriaDto;
 import org.springframework.data.domain.Page;
 
 public interface TableFragment {
-
     public Page<TableEntity> findTables(TableSearchCriteriaDto criteria);
 }

@@ -7,6 +7,5 @@ import com.devonfw.application.service.rest.model.InvitedGuestSearchCriteriaDto;
 import org.springframework.data.domain.Page;
 
 public interface InvitedGuestFragment {
- //TODO
     public Page<InvitedGuestEntity> findInvitedGuests(InvitedGuestSearchCriteriaDto criteria);
 }

@@ -168,7 +168,7 @@ public class BookingManagementRestService {
     }
 
     /**
-     * TODO
+     * Find the InvitedGuests with the given SearchCriteria
      *
      * @param searchCriteriaTo the pagination and search criteria to be used for finding invitedguests.
      * @return the list of matching {@link InvitedGuestDto}s.
@@ -261,7 +261,7 @@ public class BookingManagementRestService {
     }
 
     /**
-     * TODO
+     * Find the Tables with the given SearchCriteria
      *
      * @param searchCriteriaTo the pagination and search criteria to be used for finding tables.
      * @return the list of matching {@link TableDto}s.

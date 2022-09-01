@@ -50,6 +50,10 @@ public class InvitedGuestFragmentImpl implements InvitedGuestFragment{
         if (modificationDate != null) {
             query.where(invitedGuestEntity.modificationDate.eq(modificationDate));
         }
+        Long idOrder = criteria.getIdOrder();
+        if (idOrder != null) {
+            query.where(invitedGuestEntity.idOrder.eq(idOrder));
+        }
 
         List<InvitedGuestEntity> invitedGuestList = query.limit(pageable.getPageSize())
                 .offset(pageable.getPageNumber() * pageable.getPageSize()).fetch();

@@ -12,7 +12,7 @@ CREATE TABLE "Table" (
 CREATE TABLE Booking (
   id BIGINT NOT NULL AUTO_INCREMENT,
   modificationCounter INTEGER NOT NULL,
-  idUser BIGINT,
+  userId BIGINT,
   name VARCHAR (255) NOT NULL,
   bookingToken VARCHAR (255),
   comment VARCHAR (4000),
