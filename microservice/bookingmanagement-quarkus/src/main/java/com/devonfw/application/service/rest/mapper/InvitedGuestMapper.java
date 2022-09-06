@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.devonfw.application.domain.model.BookingEntity;
 import com.devonfw.application.service.rest.model.BookingDto;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -13,7 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import com.devonfw.application.domain.model.InvitedGuestEntity;
 import com.devonfw.application.service.rest.model.InvitedGuestDto;
 
-@Mapper(componentModel ="cdi")
+@Mapper(componentModel ="cdi", builder = @Builder(disableBuilder = true))
 public interface InvitedGuestMapper {
 
     InvitedGuestDto mapTo(InvitedGuestEntity invitedGuestEntity);

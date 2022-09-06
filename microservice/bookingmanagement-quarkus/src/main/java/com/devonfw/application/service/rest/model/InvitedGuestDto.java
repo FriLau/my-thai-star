@@ -1,6 +1,5 @@
 package com.devonfw.application.service.rest.model;
 
-import com.devonfw.application.domain.model.BookingEntity;
 import com.devonfw.application.general.domain.model.AbstractDto;
 import lombok.*;
 
@@ -28,6 +27,6 @@ public class InvitedGuestDto extends AbstractDto {
 
     private Instant modificationDate;
 
-    private Long idOrder;
+    private Long orderId;
 
 }

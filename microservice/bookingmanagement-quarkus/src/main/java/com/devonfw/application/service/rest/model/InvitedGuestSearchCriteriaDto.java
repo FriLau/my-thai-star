@@ -27,7 +27,7 @@ public class InvitedGuestSearchCriteriaDto extends AbstractSearchCriteriaDto {
 
     private Instant modificationDate;
 
-    private Long idOrder;
+    private Long orderId;
 
     private StringSearchConfigTo guestTokenOption;
 

@@ -6,6 +6,7 @@ import com.devonfw.application.domain.model.TableEntity;
 import com.devonfw.application.domain.repo.BookingRepository;
 import com.devonfw.application.domain.repo.InvitedGuestRepository;
 import com.devonfw.application.domain.repo.TableRepository;
+import com.devonfw.application.logic.exception.CancelInviteNotAllowedException;
 import com.devonfw.application.service.rest.BookingManagementRestService;
 import com.devonfw.application.service.rest.mapper.BookingMapper;
 import com.devonfw.application.service.rest.mapper.InvitedGuestMapper;
@@ -36,6 +37,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @ApplicationScoped
 public class BookingManagementImpl implements BookingManagement{
@@ -45,19 +47,19 @@ public class BookingManagementImpl implements BookingManagement{
     UriInfo uriInfo;
 
     @Inject
-    BookingRepository bookingRepo;
+    BookingRepository bookingRepository;
 
     @Inject
     BookingMapper bookingMapper;
 
     @Inject
-    InvitedGuestRepository invitedGuestRepo;
+    InvitedGuestRepository invitedGuestRepository;
 
     @Inject
     InvitedGuestMapper invitedGuestMapper;
 
     @Inject
-    TableRepository tableRepo;
+    TableRepository tableRepository;
 
     @Inject
     TableMapper tableMapper;
@@ -68,15 +70,15 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public List<BookingDto> findAllBookings() {
-
-        return this.bookingMapper.mapList(getBookingDao().findAll());
+        var test = getBookingRepository().findAll();
+        return this.bookingMapper.mapList(getBookingRepository().findAll());
     }
 
     @Override
     public BookingDto findBooking(Long id) {
 
         LOG.debug("Get Booking with id {} from database.", id);
-        BookingEntity bookingEntity = getBookingDao().findById(id).get();
+        BookingEntity bookingEntity = getBookingRepository().findById(id).get();
         BookingDto bookingDto = null;
         if (bookingEntity != null)
         {
@@ -91,7 +93,7 @@ public class BookingManagementImpl implements BookingManagement{
     public BookingDto findBookingByToken(String token) {
 
         LOG.debug("Get Booking with token {} from database.", token);
-        BookingEntity bookingEntity = bookingRepo.getBookingByToken(token);
+        BookingEntity bookingEntity = bookingRepository.getBookingByToken(token);
         BookingDto bookingDto = null;
         if (bookingEntity != null)
         {
@@ -103,48 +105,95 @@ public class BookingManagementImpl implements BookingManagement{
     }
 
     @Override
-    public BookingDto updateBooking(BookingDto booking) {
-        Objects.requireNonNull(booking, "Booking object cant be null");
-
-        BookingEntity bookingEntity = saveBooking(this.bookingMapper.mapTo(booking));
-        return this.bookingMapper.mapTo(bookingEntity);
-    }
-
-    @Override
     public BookingDto createBooking(BookingDto booking) {
-
         Objects.requireNonNull(booking, "Booking object cant be null");
-        BookingEntity bookingEntity = this.bookingMapper.mapTo(booking);
-        List<InvitedGuestEntity> invitedGuestList = new ArrayList<>();
+        Objects.requireNonNull(booking.getTable(), "Booking need a Table to be created");
 
-        for (InvitedGuestDto invitedGuestDto : booking.getInvitedGuests())
+        Optional<TableEntity> tableEntity = this.tableRepository.findById(booking.getTable().getId());
+        Objects.requireNonNull(tableEntity, "Table for Booking not found in database.");
+        if (booking.getAssistants() < 1 )
         {
-            invitedGuestList.add(this.invitedGuestMapper.mapTo(invitedGuestDto));
+            throw new RuntimeException("Assistants must be greater than 0.");
         }
 
-        for (InvitedGuestEntity invitedGuest : invitedGuestList) {
-            try {
-                invitedGuest.setGuestToken(buildToken(invitedGuest.getEmail(), "GB_"));
-            } catch (NoSuchAlgorithmException e) {
-                LOG.debug("MD5 Algorithm not available at the enviroment");
-            }
-            //inviteGuest.setAccepted(false);
-            invitedGuest.setBooking(bookingEntity);
-        }
+        List<InvitedGuestEntity> invitedGuestList = new ArrayList<>();
+        List<InvitedGuestDto> invitedGuestDtoList = booking.getInvitedGuests();
+
+        BookingEntity bookingEntity = this.bookingMapper.mapTo(booking);
+        bookingEntity.setCanceled(false);
+        bookingEntity.setTable(tableEntity.get());
         bookingEntity.setInvitedGuests(invitedGuestList);
-
+        bookingEntity.setCreationDate(Instant.now());
 
         try {
             bookingEntity.setBookingToken(buildToken(bookingEntity.getEmail(), "CB_"));
         } catch (NoSuchAlgorithmException e) {
-            LOG.debug("MD5 Algorithm not available at the enviroment");
+            LOG.debug("MD5 Algorithm not available at the environment");
         }
 
-        bookingEntity.setCreationDate(Instant.now());
-        bookingEntity.setExpirationDate(bookingEntity.getBookingDate().minus(Duration.ofHours(1)));
+        BookingEntity resultEntity = this.bookingRepository.save(bookingEntity);
 
-        BookingEntity resultEntity = saveBooking(bookingEntity);
-        LOG.info("Booking with id '{}' has been created.", resultEntity.getId());
+        if (booking.getInvitedGuests() != null)
+        {
+            for (InvitedGuestDto invitedGuestDto : invitedGuestDtoList)
+            {
+                InvitedGuestEntity invitedGuestEntity = this.invitedGuestMapper.mapTo(invitedGuestDto);
+                invitedGuestList.add(this.invitedGuestMapper.mapTo(invitedGuestDto));
+
+                invitedGuestEntity.setBooking(resultEntity);
+                invitedGuestEntity.setAccepted(false);
+
+                try {
+                    invitedGuestEntity.setGuestToken(buildToken(invitedGuestEntity.getEmail(), "GB_"));
+                } catch (NoSuchAlgorithmException e) {
+                    LOG.debug("MD5 Algorithm not available at the environment");
+                }
+
+                invitedGuestList.add(getInvitedGuestRepository().save(invitedGuestEntity));
+
+            }
+        }
+
+//        Objects.requireNonNull(booking, "Booking object cant be null");
+//        BookingEntity bookingEntity = this.bookingMapper.mapTo(booking);
+//        List<InvitedGuestEntity> invitedGuestList = new ArrayList<>();
+//
+//        // Invited Guest
+//        if (booking.getInvitedGuests() != null)
+//        {
+//            for (InvitedGuestDto invitedGuestDto : booking.getInvitedGuests())
+//            {
+//                InvitedGuestEntity invitedGuestEntity = this.invitedGuestMapper.mapTo(invitedGuestDto);
+//                invitedGuestList.add(this.invitedGuestMapper.mapTo(invitedGuestDto));
+//
+//                invitedGuestEntity.setAccepted(false);
+//                //invitedGuestEntity.setBooking(bookingEntity);
+//
+//                try {
+//                    invitedGuestEntity.setGuestToken(buildToken(invitedGuestEntity.getEmail(), "GB_"));
+//                } catch (NoSuchAlgorithmException e) {
+//                    LOG.debug("MD5 Algorithm not available at the environment");
+//                }
+//
+//            }
+//        }
+//
+//        bookingEntity.setInvitedGuests(invitedGuestList);
+//
+//        try {
+//            bookingEntity.setBookingToken(buildToken(bookingEntity.getEmail(), "CB_"));
+//        } catch (NoSuchAlgorithmException e) {
+//            LOG.debug("MD5 Algorithm not available at the enviroment");
+//        }
+//
+//        bookingEntity.setCreationDate(Instant.now());
+//        bookingEntity.setExpirationDate(bookingEntity.getBookingDate().minus(Duration.ofHours(1)));
+//
+//        BookingEntity resultEntity = saveBooking(bookingEntity);
+//        LOG.info("Booking with id '{}' has been created.", resultEntity.getId());
+//
+//
+//        return this.bookingMapper.mapTo(resultEntity);
 
 
         return this.bookingMapper.mapTo(resultEntity);
@@ -154,19 +203,26 @@ public class BookingManagementImpl implements BookingManagement{
 
         Objects.requireNonNull(bookingEntity, "Booking object cant be null");
 
-        BookingEntity resultEntity = getBookingDao().save(bookingEntity);
+        BookingEntity resultEntity = bookingEntity;
 
-        for (InvitedGuestEntity invitedGuest : resultEntity.getInvitedGuests()) {
+        Optional<TableEntity> tableEntity = this.tableRepository.findById(bookingEntity.getTable().getId());
+        Objects.requireNonNull(tableEntity, "Table for Booking not valid.");
 
-            invitedGuest.setBooking(bookingEntity);
-            saveInvitedGuest(invitedGuest);
+        resultEntity.setTable(tableEntity.get());
+
+        List<InvitedGuestEntity> invitedGuestEntityArrayList = bookingEntity.getInvitedGuests();
+        resultEntity.setInvitedGuests(new ArrayList<InvitedGuestEntity>());
+        resultEntity = getBookingRepository().save(resultEntity);
+        LOG.debug("Booking with id '{}' has been saved.", resultEntity.getId());
+
+        for (InvitedGuestEntity invitedGuest : invitedGuestEntityArrayList) {
+
+            invitedGuest.setBooking(resultEntity);
+            resultEntity.getInvitedGuests().add(saveInvitedGuest(invitedGuest));
             LOG.info("Invitation with id '{}' has been saved.", invitedGuest.getId());
         }
 
-        saveTable(resultEntity.getTable());
-
-        LOG.debug("Table with id '{}' has been saved.", resultEntity.getTable().getId());
-
+        resultEntity = getBookingRepository().save(resultEntity);
         LOG.debug("Booking with id '{}' has been saved.", resultEntity.getId());
 
         return resultEntity;
@@ -177,9 +233,13 @@ public class BookingManagementImpl implements BookingManagement{
 
         //Delete all Order of this Booking
 
-        //TODO deleteBooking != cancelInvite
+        if (!getBookingRepository().findById(bookingId).get().getInvitedGuests().isEmpty())
+        {
+            LOG.debug("Booking cant be deleted. InvitedGuest are still present. Cancel the Booking.");
+            return false;
+        }
 
-        getBookingDao().deleteById(bookingId);
+        getBookingRepository().deleteById(bookingId);
         LOG.debug("The booking with id '{}' has been deleted.", bookingId);
         return true;
 
@@ -189,7 +249,7 @@ public class BookingManagementImpl implements BookingManagement{
     public Page<BookingDto> findBookingsByPost(BookingSearchCriteriaDto searchCriteriaDto) {
 
         Page<BookingDto> bookingDtoList = null;
-        Page<BookingEntity> bookingEntityList = getBookingDao().findBookings(searchCriteriaDto);
+        Page<BookingEntity> bookingEntityList = getBookingRepository().findBookings(searchCriteriaDto);
         List<BookingDto> ctos = new ArrayList<>(bookingEntityList.getContent().size());
         for (BookingEntity booking: bookingEntityList)
         {
@@ -211,9 +271,9 @@ public class BookingManagementImpl implements BookingManagement{
      *
      * @return the {@link BookingRepository} instance.
      */
-    public BookingRepository getBookingDao() {
+    public BookingRepository getBookingRepository() {
 
-        return this.bookingRepo;
+        return this.bookingRepository;
     }
 
     public String buildToken(String email, String type) throws NoSuchAlgorithmException {
@@ -241,13 +301,13 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public List<InvitedGuestDto> findAllInvitedGuests() {
 
-        return this.invitedGuestMapper.mapList(getInvitedGuestDao().findAll());
+        return this.invitedGuestMapper.mapList(getInvitedGuestRepository().findAll());
     }
 
     @Override
     public InvitedGuestDto findInvitedGuest(Long id) {
 
-        InvitedGuestEntity invitedGuestEntity = getInvitedGuestDao().findById(id).get();
+        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().findById(id).get();
         InvitedGuestDto invitedGuestDto = null;
         if (invitedGuestEntity != null)
         {
@@ -263,7 +323,7 @@ public class BookingManagementImpl implements BookingManagement{
     public InvitedGuestDto findInvitedGuestByToken(String token) {
 
         LOG.debug("Get InvitedGuest with token {} from database.", token);
-        InvitedGuestEntity invitedGuestEntity = getInvitedGuestDao().getInvitedGuestByToken(token);
+        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(token);
         InvitedGuestDto invitedGuestDto = null;
         if (invitedGuestEntity != null)
         {
@@ -286,7 +346,7 @@ public class BookingManagementImpl implements BookingManagement{
         Objects.requireNonNull(invitedGuest, "InvitedGuest object cant be null");
 
         InvitedGuestEntity invitedGuestEntity = this.invitedGuestMapper.mapTo(invitedGuest);
-        invitedGuestEntity.setBooking(getBookingDao().findById(invitedGuest.getBookingId()).get());
+        invitedGuestEntity.setBooking(getBookingRepository().findById(invitedGuest.getBookingId()).get());
 
         invitedGuestEntity = saveInvitedGuest(invitedGuestEntity);
 
@@ -297,7 +357,7 @@ public class BookingManagementImpl implements BookingManagement{
     }
 
     private InvitedGuestEntity saveInvitedGuest(InvitedGuestEntity invitedGuestEntity) {
-        invitedGuestEntity = getInvitedGuestDao().save(invitedGuestEntity);
+        invitedGuestEntity = getInvitedGuestRepository().save(invitedGuestEntity);
         LOG.info("invitedGuestEntity with id '{}' has been saved.", invitedGuestEntity.getId());
 
         return invitedGuestEntity;
@@ -306,7 +366,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public boolean deleteInvitedGuest(Long invitedGuestId) {
 
-        getInvitedGuestDao().deleteById(invitedGuestId);
+        getInvitedGuestRepository().deleteById(invitedGuestId);
         LOG.debug("The invitedGuest with id '{}' has been deleted.", invitedGuestId);
         return true;
     }
@@ -315,7 +375,7 @@ public class BookingManagementImpl implements BookingManagement{
     public Page<InvitedGuestDto> findInvitedGuestsByPost(InvitedGuestSearchCriteriaDto searchCriteriaDto) {
 
         Page<InvitedGuestDto> invitedGuestDtoList = null;
-        Page<InvitedGuestEntity> invitedGuestEntityList = getInvitedGuestDao().findInvitedGuests(searchCriteriaDto);
+        Page<InvitedGuestEntity> invitedGuestEntityList = getInvitedGuestRepository().findInvitedGuests(searchCriteriaDto);
         List<InvitedGuestDto> ctos = new ArrayList<>(invitedGuestEntityList.getContent().size());
         for (InvitedGuestEntity invitedGuest: invitedGuestEntityList)
         {
@@ -336,15 +396,15 @@ public class BookingManagementImpl implements BookingManagement{
      *
      * @return the {@link InvitedGuestRepository} instance.
      */
-    public InvitedGuestRepository getInvitedGuestDao() {
+    public InvitedGuestRepository getInvitedGuestRepository() {
 
-        return this.invitedGuestRepo;
+        return this.invitedGuestRepository;
     }
 
     @Override
     public InvitedGuestDto acceptInvite(String guestToken) {
 
-        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(this.invitedGuestRepo.getInvitedGuestByToken(guestToken));
+        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(this.invitedGuestRepository.getInvitedGuestByToken(guestToken));
         invitedGuestDto.setAccepted(true);
         saveInvitedGuest(invitedGuestDto);
         return invitedGuestDto;
@@ -353,34 +413,35 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public InvitedGuestDto declineInvite(String guestToken) {
 
-        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(this.invitedGuestRepo.getInvitedGuestByToken(guestToken));
+        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(this.invitedGuestRepository.getInvitedGuestByToken(guestToken));
         invitedGuestDto.setAccepted(false);
         saveInvitedGuest(invitedGuestDto);
         return invitedGuestDto;
     }
 
-    //TODO
     @Override
     public void cancelInvite(String bookingToken) {
 
-//        Objects.requireNonNull(bookingToken, "bookingToken");
-//        BookingCto bookingCto = findBookingByToken(bookingToken);
-//
-//        if (bookingCto != null) {
-//            if (!cancelInviteAllowed(bookingCto.getBooking())) {
-//                throw new CancelInviteNotAllowedException();
-//            }
-//            List<InvitedGuestEto> guestsEto = findInvitedGuestByBooking(bookingCto.getBooking().getId());
-//            if (guestsEto != null) {
-//                for (InvitedGuestEto guestEto : guestsEto) {
-//                    deleteInvitedGuest(guestEto.getId());
-//                    sendCancellationEmailToGuest(bookingCto.getBooking(), guestEto);
-//                }
-//            }
-//            // delete booking and related orders
-//            deleteBooking(bookingCto.getBooking().getId());
-//            sendCancellationEmailToHost(bookingCto.getBooking());
-//        }
+        Objects.requireNonNull(bookingToken, "bookingToken");
+        BookingDto bookingDto = findBookingByToken(bookingToken);
+
+        if (bookingDto != null) {
+            if (!cancelInviteAllowed(bookingDto)) {
+                throw new CancelInviteNotAllowedException();
+            }
+            // Cancel all invites
+             List<InvitedGuestDto> invitedGuestsDto = findInvitedGuestByBooking(bookingDto.getId());
+            if (invitedGuestsDto != null) {
+                for (InvitedGuestDto invitiedGuest : invitedGuestsDto) {
+                    deleteInvitedGuest(invitiedGuest.getId());
+                    //sendCancellationEmailToGuest(bookingCto.getBooking(), guestEto);
+                }
+            }
+            // delete booking and related orders
+            deleteBooking(bookingDto.getId());
+            //sendCancellationEmailToHost(bookingCto.getBooking());
+
+        }
     }
 
     private boolean cancelInviteAllowed(BookingDto booking) {
@@ -398,13 +459,13 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public List<TableDto> findAllTables() {
 
-        return this.tableMapper.mapList(getTableDao().findAll());
+        return this.tableMapper.mapList(getTableRepository().findAll());
     }
 
     @Override
     public TableDto findTable(Long id) {
 
-        TableEntity tableEntity = getTableDao().findById(id).get();
+        TableEntity tableEntity = getTableRepository().findById(id).get();
         LOG.debug("Get Table with id {} from database.", id);
         return this.tableMapper.mapTo(tableEntity);
     }
@@ -422,7 +483,7 @@ public class BookingManagementImpl implements BookingManagement{
 
     private TableEntity saveTable(TableEntity tableEntity)
     {
-        TableEntity resultEntity = getTableDao().save(tableEntity);
+        TableEntity resultEntity = getTableRepository().save(tableEntity);
         LOG.debug("Table with id '{}' has been created.", resultEntity.getId());
 
         return resultEntity;
@@ -431,8 +492,14 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public boolean deleteTable(Long tableId) {
 
-        getTableDao().deleteById(tableId);
-        LOG.debug("The table with id '{}' has been deleted.", tableId);
+        if (!getBookingRepository().getBookingsByTableId(tableId).isEmpty())
+        {
+            LOG.debug("Table cant be deleted. Bookings are still present. First delete the Bookings.");
+            return false;
+        }
+
+        getTableRepository().deleteById(tableId);
+        LOG.debug("The Table with id '{}' has been deleted.", tableId);
         return true;
     }
 
@@ -440,7 +507,7 @@ public class BookingManagementImpl implements BookingManagement{
     public Page<TableDto> findTablesByPost(TableSearchCriteriaDto searchCriteriaDto) {
 
         Page<TableDto> tableDtoList = null;
-        Page<TableEntity> tableEntityList = getTableDao().findTables(searchCriteriaDto);
+        Page<TableEntity> tableEntityList = getTableRepository().findTables(searchCriteriaDto);
         List<TableDto> ctos = this.tableMapper.mapList(tableEntityList.getContent());
         if (ctos.size() > 0)
         {
@@ -455,8 +522,8 @@ public class BookingManagementImpl implements BookingManagement{
      *
      * @return the {@link TableRepository} instance.
      */
-    public TableRepository getTableDao() {
+    public TableRepository getTableRepository() {
 
-        return this.tableRepo;
+        return this.tableRepository;
     }
 }

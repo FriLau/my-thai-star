@@ -1,6 +1,10 @@
 package com.devonfw.application.general.domain.model;
 
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -11,13 +15,14 @@ import java.io.Serializable;
  *
  * @since 3.0.0
  */
+@SuperBuilder
 public abstract class AbstractDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    protected Long id;
 
-    private int modificationCounter;
+    protected int modificationCounter;
 
     /**
      * @return id

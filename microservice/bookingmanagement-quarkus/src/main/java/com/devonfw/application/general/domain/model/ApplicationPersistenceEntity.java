@@ -1,6 +1,11 @@
 package com.devonfw.application.general.domain.model;
 
-import javax.persistence.*;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 
 /**
  * Abstract Entity for all Entities with an id and a version field.
@@ -15,7 +20,7 @@ public abstract class ApplicationPersistenceEntity {
     private Long id;
 
     /** @see #getModificationCounter() */
-    private int modificationCounter;
+    private Integer modificationCounter;
 
     /**
      * The constructor.
@@ -40,10 +45,14 @@ public abstract class ApplicationPersistenceEntity {
         this.id = id;
     }
 
-//    @Version TODO
-    public int getModificationCounter() {
-
+    @Version
+    public Integer getModificationCounter() {
         return this.modificationCounter;
+    }
+
+    public void setModificationCounter(Integer version) {
+
+        this.modificationCounter = version;
     }
 
     public void setModificationCounter(int version) {

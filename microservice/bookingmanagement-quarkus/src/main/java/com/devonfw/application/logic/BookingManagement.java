@@ -23,8 +23,6 @@ public interface BookingManagement {
 
     public BookingDto findBookingByToken(String token);
 
-    public BookingDto updateBooking(BookingDto booking);
-
     public BookingDto createBooking(BookingDto booking);
 
     public boolean deleteBooking(Long bookingId);

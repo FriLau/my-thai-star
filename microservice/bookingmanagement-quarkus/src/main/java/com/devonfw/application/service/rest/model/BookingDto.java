@@ -23,7 +23,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class  BookingDto extends AbstractDto {
+public class BookingDto extends AbstractDto {
 
     @NotNull
     private String name;
@@ -49,13 +49,11 @@ public class  BookingDto extends AbstractDto {
 
     private TableDto table;
 
-    private Long idOrder;
+    private Long orderId;
 
-    private Long idUser;
+    private Long userId;
 
     private List<InvitedGuestDto> invitedGuests;
 
     private Integer assistants;
-
-
 }

@@ -22,24 +22,23 @@ CREATE TABLE Booking (
   creationDate TIMESTAMP,
   canceled BOOLEAN NOT NULL DEFAULT ((0)) ,
   bookingType INTEGER,
-  idTable BIGINT,
-  idOrder BIGINT,
+  tableId BIGINT,
+  orderId BIGINT,
   assistants INTEGER,
   CONSTRAINT PK_Booking PRIMARY KEY(id),
---  CONSTRAINT FK_Booking_idUser FOREIGN KEY(idUser) REFERENCES User(id) NOCHECK,
-  CONSTRAINT FK_Booking_idTable FOREIGN KEY(idTable) REFERENCES "Table"(id) NOCHECK
+  CONSTRAINT FK_Booking_tableId FOREIGN KEY(tableId) REFERENCES "Table"(id) NOCHECK
 );
 
 -- *** InvitedGuest ***
 CREATE TABLE InvitedGuest (
   id BIGINT NOT NULL AUTO_INCREMENT,
   modificationCounter INTEGER NOT NULL,
-  idBooking BIGINT NOT NULL,
+  bookingId BIGINT NOT NULL,
   guestToken VARCHAR (255),
   email VARCHAR (60),
   accepted BOOLEAN,
   modificationDate TIMESTAMP,
-  idOrder BIGINT,
+  orderId BIGINT,
   CONSTRAINT PK_InvitedGuest PRIMARY KEY(id),
-  CONSTRAINT FK_InvitedGuest_idBooking FOREIGN KEY(idBooking) REFERENCES Booking(id) NOCHECK
+  CONSTRAINT FK_InvitedGuest_bookingId FOREIGN KEY(bookingId) REFERENCES Booking(id) NOCHECK
 );

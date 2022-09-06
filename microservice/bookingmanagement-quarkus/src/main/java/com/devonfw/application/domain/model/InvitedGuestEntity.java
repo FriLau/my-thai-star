@@ -1,7 +1,6 @@
 package com.devonfw.application.domain.model;
 
 import com.devonfw.application.general.domain.model.ApplicationPersistenceEntity;
-import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -22,7 +21,7 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
 
     private Instant modificationDate;
 
-    private Long idOrder;
+    private Long orderId;
 
     public InvitedGuestEntity() {
 
@@ -33,7 +32,7 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
      * @return booking
      */
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idBooking")
+    @JoinColumn(name = "bookingId")
     public BookingEntity getBooking() {
 
         return this.booking;
@@ -55,8 +54,32 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
         return modificationDate;
     }
 
-    public Long getIdOrder() {
-        return idOrder;
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    @Transient
+    public Long getBookingId()
+    {
+
+        if (this.booking == null)
+        {
+            return null;
+        }
+        return this.booking.getId();
+    }
+
+    public void setBookingId(Long bookingId)
+    {
+        if (bookingId == null)
+        {
+            this.booking = null;
+        } else
+        {
+            BookingEntity bookingEntity = new BookingEntity();
+            bookingEntity.setId(bookingId);
+            this.booking = bookingEntity;
+        }
     }
 
 }

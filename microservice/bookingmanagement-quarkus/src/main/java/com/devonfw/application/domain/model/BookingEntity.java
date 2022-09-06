@@ -1,7 +1,6 @@
 package com.devonfw.application.domain.model;
 
 import com.devonfw.application.general.domain.model.ApplicationPersistenceEntity;
-import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -42,9 +41,9 @@ public class BookingEntity extends ApplicationPersistenceEntity {
 
     private TableEntity table;
 
-    private Long idOrder;
+    private Long orderId;
 
-    private Long idUser;
+    private Long userId;
 
     private List<InvitedGuestEntity> invitedGuests;
 
@@ -92,18 +91,18 @@ public class BookingEntity extends ApplicationPersistenceEntity {
      * @return table
      */
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idTable")
+    @JoinColumn(name = "tableId")
     public TableEntity getTable() {
 
         return this.table;
     }
 
-    public Long getIdOrder() {
-        return idOrder;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public Long getIdUser() {
-        return idUser;
+    public Long getUserId() {
+        return userId;
     }
 
     /**

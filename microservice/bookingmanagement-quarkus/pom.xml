@@ -109,19 +109,6 @@
       <version>${querydsl.version}</version>
     </dependency>
 
-<!--    Mapstruct dependencies-->
-    <dependency>
-      <groupId>org.mapstruct</groupId>
-      <artifactId>mapstruct</artifactId>
-      <version>${mapstruct.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mapstruct</groupId>
-      <artifactId>mapstruct-processor</artifactId>
-      <version>${mapstruct.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
 <!--    Lombok dependencies-->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -135,6 +122,19 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok-mapstruct-binding</artifactId>
       <version>0.2.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--    Mapstruct dependencies-->
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${mapstruct.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <version>${mapstruct.version}</version>
       <scope>provided</scope>
     </dependency>
 

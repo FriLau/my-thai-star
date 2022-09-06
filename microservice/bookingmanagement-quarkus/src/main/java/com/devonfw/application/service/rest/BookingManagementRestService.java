@@ -10,12 +10,8 @@ import com.devonfw.application.service.rest.model.InvitedGuestSearchCriteriaDto;
 import com.devonfw.application.service.rest.model.TableDto;
 import com.devonfw.application.service.rest.model.TableSearchCriteriaDto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -35,9 +31,7 @@ import java.util.List;
 import static javax.ws.rs.core.Response.created;
 import static javax.ws.rs.core.Response.status;
 
-//TODO Add missing functions
-
-@Path("/bookingmanagement/v1")
+@Path("/booking-management/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class BookingManagementRestService {
@@ -58,7 +52,7 @@ public class BookingManagementRestService {
 
     // Test to see all invitedGuest
     @GET
-    @Path("/invitedGuest/")
+    @Path("/invited-guest/")
     public List<InvitedGuestDto> getInvitedGuests()
     {
         return this.bookingManagement.findAllInvitedGuests();
@@ -109,8 +103,16 @@ public class BookingManagementRestService {
     @Path("/booking/{id}/")
     public Response deleteBooking(@PathParam("id") long id)
     {
-        this.bookingManagement.deleteBooking(id);
-        return status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        boolean result = this.bookingManagement.deleteBooking(id);
+        if (result)
+        {
+            return status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        }
+        else
+        {
+            return status(Response.Status.FORBIDDEN.getStatusCode()).build();
+        }
+
     }
 
     /**
@@ -133,7 +135,7 @@ public class BookingManagementRestService {
      * @return the {@link InvitedGuestDto}
      */
     @GET
-    @Path("/invitedguest/{id}/")
+    @Path("/invited-guest/{id}/")
     public InvitedGuestDto getInvitedGuest(@PathParam("id") long id)
     {
         return this.bookingManagement.findInvitedGuest(id);
@@ -146,7 +148,7 @@ public class BookingManagementRestService {
      * @return the recently created {@link InvitedGuestDto}
      */
     @POST
-    @Path("/invitedguest/")
+    @Path("/invited-guest/")
     public Response saveInvitedGuest(InvitedGuestDto invitedGuest)
     {
         InvitedGuestDto invitedGuestDto = this.bookingManagement.saveInvitedGuest(invitedGuest);
@@ -160,7 +162,7 @@ public class BookingManagementRestService {
      * @param id ID of the {@link InvitedGuestDto} to be deleted
      */
     @DELETE
-    @Path("/invitedguest/{id}/")
+    @Path("/invited-guest/{id}/")
     public Response deleteInvitedGuest(@PathParam("id") long id)
     {
         this.bookingManagement.deleteInvitedGuest(id);
@@ -173,7 +175,7 @@ public class BookingManagementRestService {
      * @param searchCriteriaTo the pagination and search criteria to be used for finding invitedguests.
      * @return the list of matching {@link InvitedGuestDto}s.
      */
-    @Path("/invitedguest/search")
+    @Path("/invited-guest/search")
     @POST
     public Page<InvitedGuestDto> findInvitedGuestsByPost(InvitedGuestSearchCriteriaDto searchCriteriaTo)
     {
@@ -186,7 +188,7 @@ public class BookingManagementRestService {
      * @param guestToken the Token of the {@link InvitedGuestDto}
      * @return the {@link InvitedGuestDto}
      */
-    @Path("/invitedguest/accept/{token}")
+    @Path("/invited-guest/accept/{token}")
     @GET
     public InvitedGuestDto acceptInvite(@PathParam("token") String guestToken)
     {
@@ -199,7 +201,7 @@ public class BookingManagementRestService {
      * @param guestToken the Token of the {@link InvitedGuestDto}
      * @return the {@link InvitedGuestDto}
      */
-    @Path("/invitedguest/decline/{token}")
+    @Path("/invited-guest/decline/{token}")
     @GET
     public InvitedGuestDto declineInvite(@PathParam("token") String guestToken)
     {
@@ -209,14 +211,14 @@ public class BookingManagementRestService {
     /**
      * Cancel the invite of a guest
      *
-     * @param bookingToken the Token of the {@link InvitedGuestDto}
-     * @return the {@link InvitedGuestDto}
+     * @param bookingToken the Token of the {@link BookingDto}
      */
     @Path("/booking/cancel/{token}")
     @GET
-    public void cancelInvite(@PathParam("token") String bookingToken)
+    public Response cancelBooking(@PathParam("token") String bookingToken)
     {
-         this.bookingManagement.cancelInvite(bookingToken);
+        this.bookingManagement.cancelInvite(bookingToken);
+        return status(Response.Status.NO_CONTENT.getStatusCode()).build();
     }
 
     /**
