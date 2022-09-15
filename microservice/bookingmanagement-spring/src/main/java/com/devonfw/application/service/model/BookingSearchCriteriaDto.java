@@ -1,4 +1,4 @@
-package com.devonfw.application.service.rest.model;
+package com.devonfw.application.service.model;
 
 import com.devonfw.application.domain.model.BookingType;
 import com.devonfw.application.general.model.AbstractSearchCriteriaDto;

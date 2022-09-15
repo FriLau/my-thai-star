@@ -3,7 +3,12 @@ package com.devonfw.application.domain.model;
 import com.devonfw.application.general.model.ApplicationPersistenceEntity;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.Instant;
 
 @Entity

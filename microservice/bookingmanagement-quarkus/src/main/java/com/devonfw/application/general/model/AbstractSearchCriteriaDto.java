@@ -1,4 +1,4 @@
-package com.devonfw.application.general.domain.model;
+package com.devonfw.application.general.model;
 
 import org.springframework.data.domain.Pageable;
 

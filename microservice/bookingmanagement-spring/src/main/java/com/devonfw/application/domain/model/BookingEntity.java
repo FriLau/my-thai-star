@@ -11,8 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
-
-
 import java.time.Instant;
 import java.util.List;
 

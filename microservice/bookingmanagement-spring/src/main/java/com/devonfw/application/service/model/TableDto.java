@@ -1,7 +1,11 @@
-package com.devonfw.application.service.rest.model;
+package com.devonfw.application.service.model;
 
 import com.devonfw.application.general.model.AbstractDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Composite transport object of Table

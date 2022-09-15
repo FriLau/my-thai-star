@@ -1,8 +1,6 @@
-package com.devonfw.application.general.domain.model;
+package com.devonfw.application.general.model;
 
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;

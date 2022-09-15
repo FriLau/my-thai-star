@@ -1,4 +1,4 @@
-package com.devonfw.application.service.rest.model;
+package com.devonfw.application.service.model;
 
 import com.devonfw.application.general.model.AbstractSearchCriteriaDto;
 import com.devonfw.application.utils.StringSearchConfigTo;
