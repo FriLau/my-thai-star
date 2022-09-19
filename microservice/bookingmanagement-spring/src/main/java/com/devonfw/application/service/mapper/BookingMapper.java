@@ -11,7 +11,7 @@ import java.util.List;
 
 //@Mapper(componentModel ="cdi", builder = @Builder(disableBuilder = true))
 //TODO
-@Mapper
+@Mapper(builder = @Builder(disableBuilder = true))
 public interface BookingMapper {
 
     BookingDto mapTo(BookingEntity bookingEntity);

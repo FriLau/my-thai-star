@@ -1,6 +1,7 @@
 package com.devonfw.application.service.model;
 
 import com.devonfw.application.general.model.AbstractSearchCriteriaDto;
+import com.devonfw.application.general.model.ApplicationSearchCriteriaDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class TableSearchCriteriaDto extends AbstractSearchCriteriaDto {
+public class TableSearchCriteriaDto extends ApplicationSearchCriteriaDto {
 
     private static final long serialVersionUID = 1L;
 

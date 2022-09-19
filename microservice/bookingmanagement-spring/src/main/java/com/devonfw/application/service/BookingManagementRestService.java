@@ -1,5 +1,6 @@
 package com.devonfw.application.service;
 
+import com.devonfw.application.domain.model.BookingEntity;
 import com.devonfw.application.logic.BookingManagement;
 import com.devonfw.application.service.model.BookingDto;
 import com.devonfw.application.service.model.BookingSearchCriteriaDto;
@@ -7,8 +8,19 @@ import com.devonfw.application.service.model.InvitedGuestDto;
 import com.devonfw.application.service.model.InvitedGuestSearchCriteriaDto;
 import com.devonfw.application.service.model.TableDto;
 import com.devonfw.application.service.model.TableSearchCriteriaDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,36 +39,39 @@ import java.util.List;
 import static javax.ws.rs.core.Response.created;
 import static javax.ws.rs.core.Response.status;
 
-@Path("/booking-management/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RequestMapping("/booking-management/v1")
+@RestController
 public class BookingManagementRestService {
 
     @Context
     UriInfo uriInfo;
 
-    @Inject
-    BookingManagement bookingManagement;
+    @Autowired
+    private final BookingManagement bookingManagement;
+
+    BookingManagementRestService(BookingManagement bookingManagement)
+    {
+        this.bookingManagement = bookingManagement;
+    }
 
     // Test to see all bookings
-    @GET
-    @Path("/booking/")
+    @GetMapping("/booking")
     public List<BookingDto> getBookings()
     {
         return this.bookingManagement.findAllBookings();
     }
 
     // Test to see all invitedGuest
-    @GET
-    @Path("/invited-guest/")
+    @GetMapping("/invited-guest")
     public List<InvitedGuestDto> getInvitedGuests()
     {
         return this.bookingManagement.findAllInvitedGuests();
     }
 
     // Test to see all table
-    @GET
-    @Path("/table/")
+    @GetMapping("/table")
     public List<TableDto> getTables()
     {
         return this.bookingManagement.findAllTables();
@@ -68,8 +83,7 @@ public class BookingManagementRestService {
      * @param id the ID of the {@link BookingDto}
      * @return the {@link BookingDto}
      */
-    @GET
-    @Path("/booking/{id}/")
+    @GetMapping("/booking/{id}")
     public BookingDto getBooking(@PathParam("id") long id)
     {
         return this.bookingManagement.findBooking(id);
@@ -81,9 +95,8 @@ public class BookingManagementRestService {
      * @param booking the {@link Response} to be saved
      * @return the recently created {@link Response}
      */
-    @POST
-    @Path("/booking/")
-    public Response saveBooking(BookingDto booking)
+    @PostMapping("/booking")
+    public Response saveBooking(@RequestParam BookingDto booking)
     {
         BookingDto bookingDto = this.bookingManagement.createBooking(booking);
         UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(bookingDto.getId()));
@@ -95,8 +108,7 @@ public class BookingManagementRestService {
      *
      * @param id ID of the {@link BookingDto} to be deleted
      */
-    @DELETE
-    @Path("/booking/{id}/")
+    @DeleteMapping("/booking/{id}")
     public Response deleteBooking(@PathParam("id") long id)
     {
         boolean result = this.bookingManagement.deleteBooking(id);
@@ -117,8 +129,7 @@ public class BookingManagementRestService {
      * @param searchCriteriaDto the pagination and search criteria to be used for finding bookings.
      * @return the list of matching {@link BookingDto}s.
      */
-    @Path("/booking/search")
-    @POST
+    @PostMapping("/booking/search")
     public Page<BookingDto> findBookingsByPost(BookingSearchCriteriaDto searchCriteriaDto)
     {
         return this.bookingManagement.findBookingsByPost(searchCriteriaDto);
@@ -130,8 +141,7 @@ public class BookingManagementRestService {
      * @param id the ID of the {@link InvitedGuestDto}
      * @return the {@link InvitedGuestDto}
      */
-    @GET
-    @Path("/invited-guest/{id}/")
+    @GetMapping("/invited-guest/{id}")
     public InvitedGuestDto getInvitedGuest(@PathParam("id") long id)
     {
         return this.bookingManagement.findInvitedGuest(id);
@@ -143,9 +153,8 @@ public class BookingManagementRestService {
      * @param invitedGuest the {@link InvitedGuestDto} to be saved
      * @return the recently created {@link InvitedGuestDto}
      */
-    @POST
-    @Path("/invited-guest/")
-    public Response saveInvitedGuest(InvitedGuestDto invitedGuest)
+    @PostMapping("/invited-guest")
+    public Response saveInvitedGuest(@RequestBody InvitedGuestDto invitedGuest)
     {
         InvitedGuestDto invitedGuestDto = this.bookingManagement.saveInvitedGuest(invitedGuest);
         UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(invitedGuestDto.getId()));
@@ -157,8 +166,7 @@ public class BookingManagementRestService {
      *
      * @param id ID of the {@link InvitedGuestDto} to be deleted
      */
-    @DELETE
-    @Path("/invited-guest/{id}/")
+    @DeleteMapping("/invited-guest/{id}")
     public Response deleteInvitedGuest(@PathParam("id") long id)
     {
         this.bookingManagement.deleteInvitedGuest(id);
@@ -171,8 +179,7 @@ public class BookingManagementRestService {
      * @param searchCriteriaTo the pagination and search criteria to be used for finding invitedguests.
      * @return the list of matching {@link InvitedGuestDto}s.
      */
-    @Path("/invited-guest/search")
-    @POST
+    @PostMapping("/invited-guest/search")
     public Page<InvitedGuestDto> findInvitedGuestsByPost(InvitedGuestSearchCriteriaDto searchCriteriaTo)
     {
         return this.bookingManagement.findInvitedGuestsByPost(searchCriteriaTo);
@@ -184,8 +191,7 @@ public class BookingManagementRestService {
      * @param guestToken the Token of the {@link InvitedGuestDto}
      * @return the {@link InvitedGuestDto}
      */
-    @Path("/invited-guest/accept/{token}")
-    @GET
+    @GetMapping("/invited-guest/accept/{token}")
     public InvitedGuestDto acceptInvite(@PathParam("token") String guestToken)
     {
         return this.bookingManagement.acceptInvite(guestToken);
@@ -197,8 +203,7 @@ public class BookingManagementRestService {
      * @param guestToken the Token of the {@link InvitedGuestDto}
      * @return the {@link InvitedGuestDto}
      */
-    @Path("/invited-guest/decline/{token}")
-    @GET
+    @GetMapping("/invited-guest/decline/{token}")
     public InvitedGuestDto declineInvite(@PathParam("token") String guestToken)
     {
         return this.bookingManagement.declineInvite(guestToken);
@@ -209,8 +214,7 @@ public class BookingManagementRestService {
      *
      * @param bookingToken the Token of the {@link BookingDto}
      */
-    @Path("/booking/cancel/{token}")
-    @GET
+    @GetMapping("/booking/cancel/{token}")
     public Response cancelBooking(@PathParam("token") String bookingToken)
     {
         this.bookingManagement.cancelInvite(bookingToken);
@@ -223,8 +227,7 @@ public class BookingManagementRestService {
      * @param id the ID of the {@link TableDto}
      * @return the {@link TableDto}
      */
-    @GET
-    @Path("/table/{id}/")
+    @GetMapping("/table/{id}")
     public TableDto getTable(@PathParam("id") long id)
     {
         return this.bookingManagement.findTable(id);
@@ -236,8 +239,7 @@ public class BookingManagementRestService {
      * @param table the {@link TableDto} to be saved
      * @return the recently created table
      */
-    @POST
-    @Path("/table/")
+    @PostMapping("/table")
     public Response saveTable(TableDto table)
     {
         TableDto tableDto = this.bookingManagement.saveTable(table);
@@ -250,8 +252,7 @@ public class BookingManagementRestService {
      *
      * @param id ID of the {@link Response} to be deleted
      */
-    @DELETE
-    @Path("/table/{id}/")
+    @DeleteMapping("/table/{id}")
     public Response deleteTable(@PathParam("id") long id)
     {
         this.bookingManagement.deleteTable(id);
@@ -264,8 +265,7 @@ public class BookingManagementRestService {
      * @param searchCriteriaTo the pagination and search criteria to be used for finding tables.
      * @return the list of matching {@link TableDto}s.
      */
-    @Path("/table/search")
-    @POST
+    @PostMapping("/table/search")
     public Page<TableDto> findTablesByPost(TableSearchCriteriaDto searchCriteriaTo)
     {
         return this.bookingManagement.findTablesByPost(searchCriteriaTo);

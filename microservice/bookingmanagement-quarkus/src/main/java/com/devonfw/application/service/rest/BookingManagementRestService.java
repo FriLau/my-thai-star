@@ -172,7 +172,7 @@ public class BookingManagementRestService {
     /**
      * Find the InvitedGuests with the given SearchCriteria
      *
-     * @param searchCriteriaTo the pagination and search criteria to be used for finding invitedguests.
+     * @param searchCriteriaTo the pagination and search criteria to be used for finding invitedGuests.
      * @return the list of matching {@link InvitedGuestDto}s.
      */
     @Path("/invited-guest/search")

@@ -1,6 +1,7 @@
 package com.devonfw.application.service.model;
 
 import com.devonfw.application.general.model.AbstractSearchCriteriaDto;
+import com.devonfw.application.general.model.ApplicationSearchCriteriaDto;
 import com.devonfw.application.utils.StringSearchConfigTo;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.time.Instant;
  */
 @Getter
 @Setter
-public class InvitedGuestSearchCriteriaDto extends AbstractSearchCriteriaDto {
+public class InvitedGuestSearchCriteriaDto extends ApplicationSearchCriteriaDto {
 
     private static final long serialVersionUID = 1L;
 

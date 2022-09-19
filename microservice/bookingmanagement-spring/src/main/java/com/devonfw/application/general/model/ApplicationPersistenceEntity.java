@@ -31,7 +31,8 @@ public abstract class ApplicationPersistenceEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //TODO
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
 
         return this.id;

@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Setter
-@Table(name = "\"Table\"")
+@Table(name = "TableTable")
 public class TableEntity extends ApplicationPersistenceEntity {
 
     private Integer seatsNumber;

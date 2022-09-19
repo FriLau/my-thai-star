@@ -77,10 +77,12 @@ public class BookingManagementRestTest {
         response = given().when().contentType(MediaType.APPLICATION_JSON).get(url).then()
                 .log().all().statusCode(OK.getStatusCode()).extract().response();
 
-        var test = response.body().jsonPath();
         invitedGuestId = response.body().jsonPath().getLong("id");
 
         assertEquals(invitedGuestDto.getEmail(), response.body().jsonPath().getString("email"));
+        assertEquals(invitedGuestDto.getAccepted(), response.body().jsonPath().getBoolean("accepted"));
+        var test = response.body().jsonPath().getLong("bookingId");
+        assertEquals(invitedGuestDto.getBookingId(), response.body().jsonPath().getLong("bookingId"));
 
     }
 
@@ -124,7 +126,6 @@ public class BookingManagementRestTest {
         response = given().when().contentType(MediaType.APPLICATION_JSON).get(url).then()
                 .log().all().statusCode(OK.getStatusCode()).extract().response();
 
-        var test = response.body().jsonPath();
         bookingId = response.body().jsonPath().getLong("id");
 
         assertEquals(bookingDto.getName(), response.body().jsonPath().getString("name"));

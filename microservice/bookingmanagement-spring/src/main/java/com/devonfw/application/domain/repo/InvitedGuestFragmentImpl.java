@@ -3,6 +3,8 @@ package com.devonfw.application.domain.repo;
 import com.devonfw.application.domain.model.InvitedGuestEntity;
 import com.devonfw.application.domain.model.QInvitedGuestEntity;
 import com.devonfw.application.service.model.InvitedGuestSearchCriteriaDto;
+import com.devonfw.application.utils.QueryUtil;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InvitedGuestFragmentImpl implements InvitedGuestFragment{
@@ -26,40 +29,41 @@ public class InvitedGuestFragmentImpl implements InvitedGuestFragment{
     @Override
     public Page<InvitedGuestEntity> findInvitedGuests(InvitedGuestSearchCriteriaDto criteria)
     {
-        Pageable pageable = criteria.getPageable();
         QInvitedGuestEntity invitedGuestEntity = QInvitedGuestEntity.invitedGuestEntity;
-
-        JPAQuery<InvitedGuestEntity> query = new JPAQuery<>(this.entityManager);
+        List<Predicate> predicates = new ArrayList<>();
 
         Long booking = criteria.getBookingId();
         if (booking != null) {
-            query.where(invitedGuestEntity.booking.id.eq(booking));
+            predicates.add(invitedGuestEntity.booking.id.eq(booking));
         }
         String guestToken = criteria.getGuestToken();
         if ((guestToken != null) && !guestToken.isEmpty()) {
-            query.where(invitedGuestEntity.guestToken.eq(guestToken));
+            predicates.add(invitedGuestEntity.guestToken.eq(guestToken));
         }
         String email = criteria.getEmail();
         if ((email != null) && !email.isEmpty()) {
-            query.where(invitedGuestEntity.email.eq(email));
+            predicates.add(invitedGuestEntity.email.eq(email));
         }
         Boolean accepted = criteria.getAccepted();
         if (accepted != null) {
-            query.where(invitedGuestEntity.accepted.eq(accepted));
+            predicates.add(invitedGuestEntity.accepted.eq(accepted));
         }
         Instant modificationDate = criteria.getModificationDate();
         if (modificationDate != null) {
-            query.where(invitedGuestEntity.modificationDate.eq(modificationDate));
+            predicates.add(invitedGuestEntity.modificationDate.eq(modificationDate));
         }
         Long orderId = criteria.getOrderId();
         if (orderId != null) {
-            query.where(invitedGuestEntity.orderId.eq(orderId));
+            predicates.add(invitedGuestEntity.orderId.eq(orderId));
         }
 
-        List<InvitedGuestEntity> invitedGuestList = query.limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber() * pageable.getPageSize()).fetch();
+        JPAQuery<InvitedGuestEntity> query = new JPAQuery<InvitedGuestEntity>(this.entityManager).from(invitedGuestEntity);
+        if (!predicates.isEmpty())
+        {
+            query.where(predicates.toArray(Predicate[]::new));
+        }
 
-        return new PageImpl<>(invitedGuestList, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()),
-                invitedGuestList.size());
+        Pageable pageable = PageRequest.of(criteria.getPageNumber(), criteria.getPageSize());
+        return QueryUtil.findPaginated(pageable, query, criteria.isDetermineTotal());
     }
 }

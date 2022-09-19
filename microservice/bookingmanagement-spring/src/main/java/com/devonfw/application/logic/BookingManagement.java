@@ -8,13 +8,9 @@ import com.devonfw.application.service.model.TableDto;
 import com.devonfw.application.service.model.TableSearchCriteriaDto;
 import org.springframework.data.domain.Page;
 
-import javax.inject.Singleton;
 import java.util.List;
 
 
-//TODO
-//@ApplicationScoped
-@Singleton
 public interface BookingManagement {
 
 //    _________________ Booking _________________

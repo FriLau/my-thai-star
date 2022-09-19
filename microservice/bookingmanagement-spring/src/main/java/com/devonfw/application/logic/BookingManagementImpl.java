@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -38,9 +39,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-//TODO
-//@ApplicationScoped
-@Singleton
+@Service
 public class BookingManagementImpl implements BookingManagement{
     private static final Logger LOG = LoggerFactory.getLogger(BookingManagementRestService.class);
 
@@ -65,13 +64,16 @@ public class BookingManagementImpl implements BookingManagement{
     @Inject
     TableMapper tableMapper;
 
-    private int hoursLimit = 1;
+    private final int hoursLimit = 1;
 
 //    _________________ Booking _________________
 
     @Override
     public List<BookingDto> findAllBookings() {
+
+        List<BookingEntity> test = getBookingRepository().findAll();
         return this.bookingMapper.mapList(getBookingRepository().findAll());
+
     }
 
     @Override
@@ -138,7 +140,6 @@ public class BookingManagementImpl implements BookingManagement{
             for (InvitedGuestDto invitedGuestDto : invitedGuestDtoList)
             {
                 InvitedGuestEntity invitedGuestEntity = this.invitedGuestMapper.mapTo(invitedGuestDto);
-                invitedGuestList.add(this.invitedGuestMapper.mapTo(invitedGuestDto));
 
                 invitedGuestEntity.setBooking(resultEntity);
                 invitedGuestEntity.setAccepted(false);
@@ -153,6 +154,7 @@ public class BookingManagementImpl implements BookingManagement{
 
             }
         }
+
         return this.bookingMapper.mapTo(resultEntity);
     }
 
@@ -176,22 +178,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public Page<BookingDto> findBookingsByPost(BookingSearchCriteriaDto searchCriteriaDto) {
 
-        Page<BookingDto> bookingDtoList = null;
-        Page<BookingEntity> bookingEntityList = getBookingRepository().findBookings(searchCriteriaDto);
-        List<BookingDto> ctos = new ArrayList<>(bookingEntityList.getContent().size());
-        for (BookingEntity booking: bookingEntityList)
-        {
-            BookingDto bookingDto = this.bookingMapper.mapTo(booking);
-            bookingDto.setInvitedGuests(this.invitedGuestMapper.mapList(booking.getInvitedGuests()));
-            bookingDto.setTable(this.tableMapper.mapTo(booking.getTable()));
-            ctos.add(bookingDto);
-        }
-        if (ctos.size() > 0)
-        {
-            Pageable pageResult = PageRequest.of(searchCriteriaDto.getPageable().getPageNumber(), ctos.size());
-            bookingDtoList = new PageImpl<>(ctos, pageResult, pageResult.getPageSize());
-        }
-        return bookingDtoList;
+        return this.bookingMapper.map(getBookingRepository().findBookings(searchCriteriaDto));
     }
 
     /**
@@ -229,6 +216,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public List<InvitedGuestDto> findAllInvitedGuests() {
 
+        List<InvitedGuestEntity> test = getInvitedGuestRepository().findAll();
         return this.invitedGuestMapper.mapList(getInvitedGuestRepository().findAll());
     }
 
@@ -260,6 +248,7 @@ public class BookingManagementImpl implements BookingManagement{
 //        }
 //        LOG.debug("Get InvitedGuest with token {} from database.", token);
 //        return invitedGuestDto;
+
         //TODO
         return null;
     }
@@ -304,21 +293,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public Page<InvitedGuestDto> findInvitedGuestsByPost(InvitedGuestSearchCriteriaDto searchCriteriaDto) {
 
-        Page<InvitedGuestDto> invitedGuestDtoList = null;
-        Page<InvitedGuestEntity> invitedGuestEntityList = getInvitedGuestRepository().findInvitedGuests(searchCriteriaDto);
-        List<InvitedGuestDto> ctos = new ArrayList<>(invitedGuestEntityList.getContent().size());
-        for (InvitedGuestEntity invitedGuest: invitedGuestEntityList)
-        {
-            InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuest);
-            invitedGuestDto.setBookingId((invitedGuest.getBooking().getId()));
-            ctos.add(invitedGuestDto);
-        }
-        if (ctos.size() > 0)
-        {
-            Pageable pageResult = PageRequest.of(searchCriteriaDto.getPageable().getPageNumber(), ctos.size());
-            invitedGuestDtoList = new PageImpl<>(ctos, pageResult, pageResult.getPageSize());
-        }
-        return invitedGuestDtoList;
+        return this.invitedGuestMapper.map(getInvitedGuestRepository().findInvitedGuests(searchCriteriaDto));
     }
 
     /**
@@ -334,7 +309,10 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public InvitedGuestDto acceptInvite(String guestToken) {
 
-//        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(this.invitedGuestRepository.getInvitedGuestByToken(guestToken));
+//        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(guestToken);
+//        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
+//        invitedGuestDto.setBookingId(invitedGuestEntity.getBooking().getId());
+//
 //        invitedGuestDto.setAccepted(true);
 //        saveInvitedGuest(invitedGuestDto);
 //        return invitedGuestDto;
@@ -346,7 +324,10 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public InvitedGuestDto declineInvite(String guestToken) {
 
-//        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(this.invitedGuestRepository.getInvitedGuestByToken(guestToken));
+//        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(guestToken);
+//        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
+//        invitedGuestDto.setBookingId(invitedGuestEntity.getBooking().getId());
+//
 //        invitedGuestDto.setAccepted(false);
 //        saveInvitedGuest(invitedGuestDto);
 //        return invitedGuestDto;
@@ -366,10 +347,10 @@ public class BookingManagementImpl implements BookingManagement{
                 throw new CancelInviteNotAllowedException();
             }
             // Cancel all invites
-             List<InvitedGuestDto> invitedGuestsDto = findInvitedGuestByBooking(bookingDto.getId());
+            List<InvitedGuestDto> invitedGuestsDto = findInvitedGuestByBooking(bookingDto.getId());
             if (invitedGuestsDto != null) {
-                for (InvitedGuestDto invitiedGuest : invitedGuestsDto) {
-                    deleteInvitedGuest(invitiedGuest.getId());
+                for (InvitedGuestDto invitedGuest : invitedGuestsDto) {
+                    deleteInvitedGuest(invitedGuest.getId());
                     //sendCancellationEmailToGuest(bookingCto.getBooking(), guestEto);
                 }
             }
@@ -382,11 +363,11 @@ public class BookingManagementImpl implements BookingManagement{
 
     private boolean cancelInviteAllowed(BookingDto booking) {
 
-        Long bookingTimeMillis = booking.getBookingDate().toEpochMilli();
-        Long cancellationLimit = bookingTimeMillis - (3600000 * this.hoursLimit);
-        Long now = Instant.now().toEpochMilli();
+        long bookingTimeMillis = booking.getBookingDate().toEpochMilli();
+        long cancellationLimit = bookingTimeMillis - (3600000L * this.hoursLimit);
+        long now = Instant.now().toEpochMilli();
 
-        return (now > cancellationLimit) ? false : true;
+        return now <= cancellationLimit;
     }
 
 
@@ -400,6 +381,7 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public TableDto findTable(Long id) {
+
 
         TableEntity tableEntity = getTableRepository().findById(id).get();
         LOG.debug("Get Table with id {} from database.", id);
@@ -442,15 +424,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public Page<TableDto> findTablesByPost(TableSearchCriteriaDto searchCriteriaDto) {
 
-        Page<TableDto> tableDtoList = null;
-        Page<TableEntity> tableEntityList = getTableRepository().findTables(searchCriteriaDto);
-        List<TableDto> ctos = this.tableMapper.mapList(tableEntityList.getContent());
-        if (ctos.size() > 0)
-        {
-            Pageable pageResult = PageRequest.of(searchCriteriaDto.getPageable().getPageNumber(), ctos.size());
-            tableDtoList = new PageImpl<>(ctos, pageResult, pageResult.getPageSize());
-        }
-        return tableDtoList;
+        return this.tableMapper.map(getTableRepository().findTables(searchCriteriaDto));
     }
 
     /**

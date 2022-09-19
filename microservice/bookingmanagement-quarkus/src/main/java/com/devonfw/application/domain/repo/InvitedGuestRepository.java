@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 public interface InvitedGuestRepository extends JpaRepository<InvitedGuestEntity, Long>, InvitedGuestFragment {
 
     @Query("SELECT invitedGuest FROM InvitedGuestEntity invitedGuest" //
-            + " WHERE invitedGuest.invitedGuestToken = :invitedGuestToken")
-    InvitedGuestEntity getInvitedGuestByToken(@Param("invitedGuestToken") String invitedGuestToken);
+            + " WHERE invitedGuest.guestToken = :token")
+    InvitedGuestEntity getInvitedGuestByToken(@Param("token") String token);
 }

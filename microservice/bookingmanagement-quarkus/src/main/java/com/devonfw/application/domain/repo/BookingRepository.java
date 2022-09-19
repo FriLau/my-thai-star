@@ -10,8 +10,8 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<BookingEntity, Long>, BookingFragment {
 
     @Query("SELECT booking FROM BookingEntity booking" //
-            + " WHERE booking.bookingToken = :bookingToken")
-    BookingEntity getBookingByToken(@Param("bookingToken") String bookingToken);
+            + " WHERE booking.bookingToken = :token")
+    BookingEntity getBookingByToken(@Param("token") String token);
 
     @Query("SELECT booking FROM BookingEntity booking" //
             + " WHERE booking.table.id = :tableId")
