@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InvitedGuestRepository extends JpaRepository<InvitedGuestEntity, Long>, InvitedGuestFragment {
 
-    //TODO
-//    @Query("SELECT invitedGuest FROM InvitedGuestEntity invitedGuest" //
-//            + " WHERE invitedGuest.invitedGuestToken = :invitedGuestToken")
-//    InvitedGuestEntity getInvitedGuestByToken(@Param("invitedGuestToken") String invitedGuestToken);
+    @Query("SELECT invitedGuest FROM InvitedGuestEntity invitedGuest" //
+            + " WHERE invitedGuest.guestToken = :invitedGuestToken")
+    InvitedGuestEntity getInvitedGuestByToken(@Param("invitedGuestToken") String invitedGuestToken);
 }

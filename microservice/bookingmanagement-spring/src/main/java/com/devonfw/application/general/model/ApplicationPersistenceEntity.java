@@ -1,5 +1,7 @@
 package com.devonfw.application.general.model;
 
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,15 +13,20 @@ import javax.persistence.Version;
  * Abstract Entity for all Entities with an id and a version field.
  *
  */
+@Setter
+@Getter
 @MappedSuperclass
 public abstract class ApplicationPersistenceEntity {
 
     private static final long serialVersionUID = 1L;
 
     /** @see #getId() */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     /** @see #getModificationCounter() */
+    @Version
     private Integer modificationCounter;
 
     /**
@@ -30,36 +37,36 @@ public abstract class ApplicationPersistenceEntity {
         super();
     }
 
-    @Id
-    //TODO
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-
-        return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setId(Long id) {
-
-        this.id = id;
-    }
-
-    @Version
-    public Integer getModificationCounter() {
-        return this.modificationCounter;
-    }
-
-    public void setModificationCounter(Integer version) {
-
-        this.modificationCounter = version;
-    }
-
-    public void setModificationCounter(int version) {
-
-        this.modificationCounter = version;
-    }
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    public Long getId() {
+//
+//        return this.id;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public void setId(Long id) {
+//
+//        this.id = id;
+//    }
+//
+//    //TODO
+//    //@Version
+//    public Integer getModificationCounter() {
+//        return this.modificationCounter;
+//    }
+//
+//    public void setModificationCounter(Integer version) {
+//
+//        this.modificationCounter = version;
+//    }
+//
+//    public void setModificationCounter(int version) {
+//
+//        this.modificationCounter = version;
+//    }
 
     public String toString() {
 

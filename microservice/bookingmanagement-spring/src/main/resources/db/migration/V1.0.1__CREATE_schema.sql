@@ -6,7 +6,7 @@ CREATE TABLE TableTable (
   id BIGINT NOT NULL AUTO_INCREMENT,
   modificationCounter INTEGER NOT NULL,
   seatsNumber INTEGER NOT NULL,
-  CONSTRAINT PK_Table PRIMARY KEY(id)
+  CONSTRAINT PK_TableTable PRIMARY KEY(id)
 );
 
 -- *** Booking ***

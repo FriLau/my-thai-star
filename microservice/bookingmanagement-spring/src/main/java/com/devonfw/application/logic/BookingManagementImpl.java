@@ -70,16 +70,14 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public List<BookingDto> findAllBookings() {
-
-        List<BookingEntity> test = getBookingRepository().findAll();
         return this.bookingMapper.mapList(getBookingRepository().findAll());
-
     }
 
     @Override
     public BookingDto findBooking(Long id) {
 
         LOG.debug("Get Booking with id {} from database.", id);
+
         BookingEntity bookingEntity = getBookingRepository().findById(id).get();
         BookingDto bookingDto = null;
         if (bookingEntity != null)
@@ -160,7 +158,7 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public boolean deleteBooking(Long bookingId) {
-
+        LOG.debug("Try to delete the booking with id '{}'.", bookingId);
         //Delete all Order of this Booking
 
         if (!getBookingRepository().findById(bookingId).get().getInvitedGuests().isEmpty())
@@ -177,7 +175,7 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public Page<BookingDto> findBookingsByPost(BookingSearchCriteriaDto searchCriteriaDto) {
-
+        LOG.debug("Try to find Booking with id {} by BookingSearchCriteriaDto '{}'.", searchCriteriaDto);
         return this.bookingMapper.map(getBookingRepository().findBookings(searchCriteriaDto));
     }
 
@@ -216,13 +214,13 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public List<InvitedGuestDto> findAllInvitedGuests() {
 
-        List<InvitedGuestEntity> test = getInvitedGuestRepository().findAll();
         return this.invitedGuestMapper.mapList(getInvitedGuestRepository().findAll());
     }
 
     @Override
     public InvitedGuestDto findInvitedGuest(Long id) {
 
+        LOG.debug("Try to find InvitedGuest with id {} from database.", id);
         InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().findById(id).get();
         InvitedGuestDto invitedGuestDto = null;
         if (invitedGuestEntity != null)
@@ -238,19 +236,16 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public InvitedGuestDto findInvitedGuestByToken(String token) {
 
-//        LOG.debug("Get InvitedGuest with token {} from database.", token);
-//        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(token);
-//        InvitedGuestDto invitedGuestDto = null;
-//        if (invitedGuestEntity != null)
-//        {
-//            invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
-//            invitedGuestDto.setBookingId((invitedGuestEntity.getBooking().getId()));
-//        }
-//        LOG.debug("Get InvitedGuest with token {} from database.", token);
-//        return invitedGuestDto;
-
-        //TODO
-        return null;
+        LOG.debug("Get InvitedGuest with token {} from database.", token);
+        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(token);
+        InvitedGuestDto invitedGuestDto = null;
+        if (invitedGuestEntity != null)
+        {
+            invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
+            invitedGuestDto.setBookingId((invitedGuestEntity.getBooking().getId()));
+        }
+        LOG.debug("Get InvitedGuest with token {} from database.", token);
+        return invitedGuestDto;
     }
 
     @Override
@@ -276,6 +271,7 @@ public class BookingManagementImpl implements BookingManagement{
     }
 
     private InvitedGuestEntity saveInvitedGuest(InvitedGuestEntity invitedGuestEntity) {
+        LOG.info("Try to save invitedGuestEntity with id '{}'.", invitedGuestEntity.getId());
         invitedGuestEntity = getInvitedGuestRepository().save(invitedGuestEntity);
         LOG.info("invitedGuestEntity with id '{}' has been saved.", invitedGuestEntity.getId());
 
@@ -284,7 +280,7 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public boolean deleteInvitedGuest(Long invitedGuestId) {
-
+        LOG.debug("Try to delete the invitedGuest with id '{}'.", invitedGuestId);
         getInvitedGuestRepository().deleteById(invitedGuestId);
         LOG.debug("The invitedGuest with id '{}' has been deleted.", invitedGuestId);
         return true;
@@ -292,7 +288,7 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public Page<InvitedGuestDto> findInvitedGuestsByPost(InvitedGuestSearchCriteriaDto searchCriteriaDto) {
-
+        LOG.debug("Try to find the invitedGuest with InvitedGuestSearchCriteriaDto '{}'.", searchCriteriaDto);
         return this.invitedGuestMapper.map(getInvitedGuestRepository().findInvitedGuests(searchCriteriaDto));
     }
 
@@ -308,42 +304,41 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public InvitedGuestDto acceptInvite(String guestToken) {
+        LOG.debug("Try to accept the invite with the guestToken '{}'.", guestToken);
 
-//        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(guestToken);
-//        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
-//        invitedGuestDto.setBookingId(invitedGuestEntity.getBooking().getId());
-//
-//        invitedGuestDto.setAccepted(true);
-//        saveInvitedGuest(invitedGuestDto);
-//        return invitedGuestDto;
+        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(guestToken);
+        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
+        invitedGuestDto.setBookingId(invitedGuestEntity.getBooking().getId());
 
-        //TODO
-        return null;
+        invitedGuestDto.setAccepted(true);
+        saveInvitedGuest(invitedGuestDto);
+        LOG.debug("The invite with the guestToken '{}' was accepted.", guestToken);
+        return invitedGuestDto;
     }
 
     @Override
     public InvitedGuestDto declineInvite(String guestToken) {
 
-//        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(guestToken);
-//        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
-//        invitedGuestDto.setBookingId(invitedGuestEntity.getBooking().getId());
-//
-//        invitedGuestDto.setAccepted(false);
-//        saveInvitedGuest(invitedGuestDto);
-//        return invitedGuestDto;
+        LOG.debug("Try to decline the invite with the guestToken '{}'.", guestToken);
+        InvitedGuestEntity invitedGuestEntity = getInvitedGuestRepository().getInvitedGuestByToken(guestToken);
+        InvitedGuestDto invitedGuestDto = this.invitedGuestMapper.mapTo(invitedGuestEntity);
+        invitedGuestDto.setBookingId(invitedGuestEntity.getBooking().getId());
 
-        //TODO
-        return null;
+        invitedGuestDto.setAccepted(false);
+        saveInvitedGuest(invitedGuestDto);
+        LOG.debug("The invite with the guestToken '{}' was declined.", guestToken);
+        return invitedGuestDto;
     }
 
     @Override
     public void cancelInvite(String bookingToken) {
-
+        LOG.debug("Try to cancel the Booking with bookingToken '{}'.", bookingToken);
         Objects.requireNonNull(bookingToken, "bookingToken");
         BookingDto bookingDto = findBookingByToken(bookingToken);
 
         if (bookingDto != null) {
             if (!cancelInviteAllowed(bookingDto)) {
+                LOG.debug("The Booking with bookingToken '{}' can't be canceled.", bookingToken);
                 throw new CancelInviteNotAllowedException();
             }
             // Cancel all invites
@@ -357,6 +352,7 @@ public class BookingManagementImpl implements BookingManagement{
             // delete booking and related orders
             deleteBooking(bookingDto.getId());
             //sendCancellationEmailToHost(bookingCto.getBooking());
+            LOG.debug("The Booking with bookingToken '{}' was canceled.", bookingToken);
 
         }
     }
@@ -381,8 +377,7 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public TableDto findTable(Long id) {
-
-
+        LOG.debug("Try to find the Table with id {} from database.", id);
         TableEntity tableEntity = getTableRepository().findById(id).get();
         LOG.debug("Get Table with id {} from database.", id);
         return this.tableMapper.mapTo(tableEntity);
@@ -391,6 +386,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public TableDto saveTable(TableDto table) {
 
+        LOG.debug("Try to save the Table '{}'.", table);
         Objects.requireNonNull(table, "Table object cant be null");
         TableEntity tableEntity = this.tableMapper.mapTo(table);
 
@@ -410,6 +406,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public boolean deleteTable(Long tableId) {
 
+        LOG.debug("Try to delete the Table with id '{}'.", tableId);
         if (!getBookingRepository().getBookingsByTableId(tableId).isEmpty())
         {
             LOG.debug("Table cant be deleted. Bookings are still present. First delete the Bookings.");
@@ -424,6 +421,7 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public Page<TableDto> findTablesByPost(TableSearchCriteriaDto searchCriteriaDto) {
 
+        LOG.debug("Try to find the invitedGuest with InvitedGuestSearchCriteriaDto '{}'.", searchCriteriaDto);
         return this.tableMapper.map(getTableRepository().findTables(searchCriteriaDto));
     }
 

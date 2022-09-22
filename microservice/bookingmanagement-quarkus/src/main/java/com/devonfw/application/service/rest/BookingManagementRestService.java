@@ -165,8 +165,14 @@ public class BookingManagementRestService {
     @Path("/invited-guest/{id}/")
     public Response deleteInvitedGuest(@PathParam("id") long id)
     {
-        this.bookingManagement.deleteInvitedGuest(id);
-        return status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        if (this.bookingManagement.deleteInvitedGuest(id))
+        {
+            return status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        }
+        else
+        {
+            return status(Response.Status.FORBIDDEN.getStatusCode()).build();
+        }
     }
 
     /**
@@ -258,8 +264,14 @@ public class BookingManagementRestService {
     @Path("/table/{id}/")
     public Response deleteTable(@PathParam("id") long id)
     {
-        this.bookingManagement.deleteTable(id);
-        return status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        if (this.bookingManagement.deleteTable(id))
+        {
+            return status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        }
+        else
+        {
+            return status(Response.Status.FORBIDDEN.getStatusCode()).build();
+        }
     }
 
     /**
