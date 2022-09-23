@@ -1,6 +1,7 @@
 package com.devonfw.application.domain.model;
 
 import com.devonfw.application.general.model.ApplicationPersistenceEntity;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -13,9 +14,12 @@ import java.time.Instant;
 
 @Entity
 @Setter
+@Getter
 @Table(name = "InvitedGuest")
 public class InvitedGuestEntity extends ApplicationPersistenceEntity {
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bookingId")
     private BookingEntity booking;
 
     private String guestToken;
@@ -33,35 +37,35 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
         super();
     }
 
-    /**
-     * @return booking
-     */
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bookingId")
-    public BookingEntity getBooking() {
-
-        return this.booking;
-    }
-
-    public String getGuestToken() {
-        return guestToken;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Boolean getAccepted() {
-        return accepted;
-    }
-
-    public Instant getModificationDate() {
-        return modificationDate;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
+//    /**
+//     * @return booking
+//     */
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "bookingId")
+//    public BookingEntity getBooking() {
+//
+//        return this.booking;
+//    }
+//
+//    public String getGuestToken() {
+//        return guestToken;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public Boolean getAccepted() {
+//        return accepted;
+//    }
+//
+//    public Instant getModificationDate() {
+//        return modificationDate;
+//    }
+//
+//    public Long getOrderId() {
+//        return orderId;
+//    }
 
     @Transient
     public Long getBookingId()
@@ -86,5 +90,4 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
             this.booking = bookingEntity;
         }
     }
-
 }

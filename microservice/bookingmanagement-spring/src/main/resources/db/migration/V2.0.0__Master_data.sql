@@ -1,13 +1,13 @@
 
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (0, 1, 4);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (1, 1, 4);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (2, 1, 4);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (3, 1, 4);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (4, 1, 6);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (5, 1, 6);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (6, 1, 6);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (7, 1, 8);
-INSERT INTO TableTable(id, modificationCounter, seatsNumber) VALUES (8, 1, 8);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (0, 1, 4);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (1, 1, 4);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (2, 1, 4);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (3, 1, 4);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (4, 1, 6);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (5, 1, 6);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (6, 1, 6);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (7, 1, 8);
+INSERT INTO "Table"(id, modificationCounter, seatsNumber) VALUES (8, 1, 8);
 
 
 

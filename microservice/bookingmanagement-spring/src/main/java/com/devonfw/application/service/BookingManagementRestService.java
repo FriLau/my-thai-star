@@ -8,6 +8,7 @@ import com.devonfw.application.service.model.InvitedGuestDto;
 import com.devonfw.application.service.model.InvitedGuestSearchCriteriaDto;
 import com.devonfw.application.service.model.TableDto;
 import com.devonfw.application.service.model.TableSearchCriteriaDto;
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -40,9 +43,6 @@ import static javax.ws.rs.core.Response.status;
 @RequestMapping("/booking-management/v1")
 @RestController
 public class BookingManagementRestService {
-
-    @Context
-    UriInfo uriInfo;
 
     @Autowired
     private final BookingManagement bookingManagement;
@@ -95,8 +95,12 @@ public class BookingManagementRestService {
     public Response saveBooking(@RequestBody BookingDto booking)
     {
         BookingDto bookingDto = this.bookingManagement.createBooking(booking);
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(bookingDto.getId()));
-        return created(uriBuilder.build()).build();
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(bookingDto.getId().toString())
+                .build()
+                .toUri();
+        return created(uri).build();
     }
 
     /**
@@ -153,8 +157,12 @@ public class BookingManagementRestService {
     public Response saveInvitedGuest(@RequestBody InvitedGuestDto invitedGuest)
     {
         InvitedGuestDto invitedGuestDto = this.bookingManagement.saveInvitedGuest(invitedGuest);
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(invitedGuestDto.getId()));
-        return created(uriBuilder.build()).build();
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(invitedGuestDto.getId().toString())
+                .build()
+                .toUri();
+        return created(uri).build();
     }
 
     /**
@@ -245,8 +253,12 @@ public class BookingManagementRestService {
     public Response saveTable(@RequestBody TableDto table)
     {
         TableDto tableDto = this.bookingManagement.saveTable(table);
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(tableDto.getId()));
-        return created(uriBuilder.build()).build();
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(tableDto.getId().toString())
+                .build()
+                .toUri();
+        return created(uri).build();
     }
 
     /**

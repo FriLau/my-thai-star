@@ -22,7 +22,7 @@ public abstract class ApplicationPersistenceEntity {
 
     /** @see #getId() */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /** @see #getModificationCounter() */
@@ -36,37 +36,6 @@ public abstract class ApplicationPersistenceEntity {
 
         super();
     }
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    public Long getId() {
-//
-//        return this.id;
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public void setId(Long id) {
-//
-//        this.id = id;
-//    }
-//
-//    //TODO
-//    //@Version
-//    public Integer getModificationCounter() {
-//        return this.modificationCounter;
-//    }
-//
-//    public void setModificationCounter(Integer version) {
-//
-//        this.modificationCounter = version;
-//    }
-//
-//    public void setModificationCounter(int version) {
-//
-//        this.modificationCounter = version;
-//    }
 
     public String toString() {
 
