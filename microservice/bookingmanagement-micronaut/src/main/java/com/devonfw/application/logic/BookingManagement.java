@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-//TODO
-//@ApplicationScoped
 public interface BookingManagement {
 
 //    _________________ Booking _________________

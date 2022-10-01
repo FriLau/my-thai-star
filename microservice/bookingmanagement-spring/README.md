@@ -1,15 +1,13 @@
-# bookingmanagement-quarkus Project
+# bookingmanagement-spring Project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This project uses Spring Boot, a Java Framework and Spring Native.
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
+You can run your application using:
 ```shell script
-./mvnw compile quarkus:dev
+./mvnw spring-boot:run
 ```
-
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
 ## Packaging and running the application
 
@@ -42,4 +40,3 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 ```
 
 You can then execute your native executable with: `./target/bookingmanagement-quarkus-1.0.0-SNAPSHOT-runner`
-

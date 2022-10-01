@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InvitedGuestRepository extends JpaRepository<InvitedGuestEntity, Long>, InvitedGuestFragment {
+public interface InvitedGuestRepository extends JpaRepository<InvitedGuestEntity, Long> {
 
     @Query("SELECT invitedGuest FROM InvitedGuestEntity invitedGuest" //
             + " WHERE invitedGuest.guestToken = :invitedGuestToken")

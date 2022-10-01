@@ -31,6 +31,11 @@ import java.util.List;
 import static javax.ws.rs.core.Response.created;
 import static javax.ws.rs.core.Response.status;
 
+// TODO
+// Remove Repository Fragment + Remove Rest Functions
+// Add native (/)
+// Remove Tests (/)
+// ReadMe
 @Path("/booking-management/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -116,6 +121,7 @@ public class BookingManagementRestService {
     }
 
     /**
+     * TODO - currently not working
      * Find the Bookings by the given searchCriteriaDto
      *
      * @param searchCriteriaDto the pagination and search criteria to be used for finding bookings.
@@ -176,6 +182,7 @@ public class BookingManagementRestService {
     }
 
     /**
+     * TODO - currently not working
      * Find the InvitedGuests with the given SearchCriteria
      *
      * @param searchCriteriaTo the pagination and search criteria to be used for finding invitedGuests.
@@ -275,6 +282,7 @@ public class BookingManagementRestService {
     }
 
     /**
+     * TODO - currently not working
      * Find the Tables with the given SearchCriteria
      *
      * @param searchCriteriaTo the pagination and search criteria to be used for finding tables.

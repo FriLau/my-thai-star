@@ -4,7 +4,6 @@ import com.devonfw.application.domain.model.BookingEntity;
 import com.devonfw.application.service.rest.model.BookingSearchCriteriaDto;
 import org.springframework.data.domain.Page;
 
-// TODO
-//public interface BookingFragment {
-//    public Page<BookingEntity> findBookings(BookingSearchCriteriaDto criteria);
-//}
+public interface BookingFragment {
+    public Page<BookingEntity> findBookings(BookingSearchCriteriaDto criteria);
+}

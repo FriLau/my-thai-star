@@ -21,6 +21,7 @@ import io.micronaut.http.uri.UriBuilder;
 import org.springframework.data.domain.Page;
 
 import javax.inject.Inject;
+import java.net.URI;
 import java.util.List;
 
 import static io.micronaut.http.HttpStatus.FORBIDDEN;
@@ -28,12 +29,8 @@ import static io.micronaut.http.HttpStatus.NO_CONTENT;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Controller("/booking-management/v1")
+@Controller(value = "/booking-management/v1")
 public class BookingManagementRestService {
-
-    //TODO
-//    @Context
-//    UriInfo uriInfo;
 
     @Inject
     BookingManagement bookingManagement;
@@ -81,10 +78,8 @@ public class BookingManagementRestService {
     public HttpResponse saveBooking(BookingDto booking)
     {
         BookingDto bookingDto = this.bookingManagement.createBooking(booking);
-//        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(bookingDto.getId()));
-//        return created(uriBuilder.build()).build();
-        //TODO
-        return HttpResponse.ok(bookingDto).contentType(MediaType.APPLICATION_JSON);
+        URI uri = UriBuilder.of("/booking-management/v1" + "/booking/" + bookingDto.getId()).build();
+        return HttpResponse.redirect(uri);
     }
 
     /**
@@ -99,17 +94,16 @@ public class BookingManagementRestService {
         if (result)
         {
             return HttpResponse.ok().status(NO_CONTENT);
-//            return status(Response.Status.NO_CONTENT.getStatusCode()).build();
         }
         else
         {
             return HttpResponse.ok().status(FORBIDDEN);
-//            return status(Response.Status.FORBIDDEN.getStatusCode()).build();
         }
 
     }
 
     /**
+     * TODO - currently not working
      * Find the Bookings by the given searchCriteriaDto
      *
      * @param searchCriteriaDto the pagination and search criteria to be used for finding bookings.
@@ -143,10 +137,8 @@ public class BookingManagementRestService {
     public HttpResponse saveInvitedGuest(InvitedGuestDto invitedGuest)
     {
         InvitedGuestDto invitedGuestDto = this.bookingManagement.saveInvitedGuest(invitedGuest);
-//        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(invitedGuestDto.getId()));
-//        return created(uriBuilder.build()).build();
-        //TODO
-        return HttpResponse.ok(invitedGuestDto).contentType(MediaType.APPLICATION_JSON);
+        URI uri = UriBuilder.of("/booking-management/v1" + "/invited-guest/" + invitedGuestDto.getId()).build();
+        return HttpResponse.redirect(uri);
     }
 
     /**
@@ -160,16 +152,15 @@ public class BookingManagementRestService {
         if (this.bookingManagement.deleteInvitedGuest(id))
         {
             return HttpResponse.ok().status(NO_CONTENT);
-//            return status(Response.Status.NO_CONTENT.getStatusCode()).build();
         }
         else
         {
             return HttpResponse.ok().status(FORBIDDEN);
-//            return status(Response.Status.FORBIDDEN.getStatusCode()).build();
         }
     }
 
     /**
+     * TODO - currently not working
      * Find the InvitedGuests with the given SearchCriteria
      *
      * @param searchCriteriaTo the pagination and search criteria to be used for finding invitedGuests.
@@ -215,7 +206,6 @@ public class BookingManagementRestService {
     {
         this.bookingManagement.cancelInvite(bookingToken);
         return HttpResponse.ok().status(NO_CONTENT);
-//        return status(Response.Status.NO_CONTENT.getStatusCode()).build();
     }
 
     /**
@@ -240,10 +230,8 @@ public class BookingManagementRestService {
     public HttpResponse saveTable(TableDto table)
     {
         TableDto tableDto = this.bookingManagement.saveTable(table);
-//        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(tableDto.getId()));
-//        return created(uriBuilder.build()).build();
-        //TODO
-        return HttpResponse.ok(tableDto).contentType(MediaType.APPLICATION_JSON);
+        URI uri = UriBuilder.of("/booking-management/v1" + "/table/" + tableDto.getId()).build();
+        return HttpResponse.redirect(uri);
     }
 
     /**
@@ -257,16 +245,15 @@ public class BookingManagementRestService {
         if (this.bookingManagement.deleteTable(id))
         {
             return HttpResponse.ok().status(NO_CONTENT);
-//            return status(Response.Status.NO_CONTENT.getStatusCode()).build();
         }
         else
         {
             return HttpResponse.ok().status(FORBIDDEN);
-//            return status(Response.Status.FORBIDDEN.getStatusCode()).build();
         }
     }
 
     /**
+     * TODO - currently not working
      * Find the Tables with the given SearchCriteria
      *
      * @param searchCriteriaTo the pagination and search criteria to be used for finding tables.

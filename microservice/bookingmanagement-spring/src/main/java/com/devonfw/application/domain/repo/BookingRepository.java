@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BookingRepository extends JpaRepository<BookingEntity, Long>, BookingFragment {
+public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
     @Query("SELECT booking FROM BookingEntity booking" //
             + " WHERE booking.bookingToken = :bookingToken")

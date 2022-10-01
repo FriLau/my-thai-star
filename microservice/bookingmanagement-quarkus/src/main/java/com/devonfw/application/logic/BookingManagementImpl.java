@@ -175,8 +175,10 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public Page<BookingDto> findBookingsByPost(BookingSearchCriteriaDto searchCriteriaDto) {
-        LOG.debug("Try to find Booking with id {} by BookingSearchCriteriaDto '{}'.", searchCriteriaDto);
-        return this.bookingMapper.map(getBookingRepository().findBookings(searchCriteriaDto));
+//        LOG.debug("Try to find Booking with id {} by BookingSearchCriteriaDto '{}'.", searchCriteriaDto);
+//        return this.bookingMapper.map(getBookingRepository().findBookings(searchCriteriaDto));
+//        TODO
+        return null;
     }
 
     /**
@@ -287,8 +289,10 @@ public class BookingManagementImpl implements BookingManagement{
     @Override
     public Page<InvitedGuestDto> findInvitedGuestsByPost(InvitedGuestSearchCriteriaDto searchCriteriaDto)
     {
-        LOG.debug("Try to find the invitedGuest with InvitedGuestSearchCriteriaDto '{}'.", searchCriteriaDto);
-        return this.invitedGuestMapper.map(getInvitedGuestRepository().findInvitedGuests(searchCriteriaDto));
+//        LOG.debug("Try to find the invitedGuest with InvitedGuestSearchCriteriaDto '{}'.", searchCriteriaDto);
+//        return this.invitedGuestMapper.map(getInvitedGuestRepository().findInvitedGuests(searchCriteriaDto));
+        //        TODO
+        return null;
     }
 
     /**
@@ -418,8 +422,10 @@ public class BookingManagementImpl implements BookingManagement{
 
     @Override
     public Page<TableDto> findTablesByPost(TableSearchCriteriaDto searchCriteriaDto) {
-        LOG.debug("Try to find the invitedGuest with InvitedGuestSearchCriteriaDto '{}'.", searchCriteriaDto);
-        return this.tableMapper.map(getTableRepository().findTables(searchCriteriaDto));
+//        LOG.debug("Try to find the invitedGuest with InvitedGuestSearchCriteriaDto '{}'.", searchCriteriaDto);
+//        return this.tableMapper.map(getTableRepository().findTables(searchCriteriaDto));
+        //        TODO
+        return null;
     }
 
     /**

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BookingRepository extends JpaRepository<BookingEntity, Long>, BookingFragment {
+public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
     @Query("SELECT booking FROM BookingEntity booking" //
             + " WHERE booking.bookingToken = :token")

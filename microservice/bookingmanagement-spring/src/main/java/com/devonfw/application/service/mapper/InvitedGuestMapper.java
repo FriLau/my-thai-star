@@ -9,9 +9,7 @@ import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 
-//@Mapper(componentModel ="cdi", builder = @Builder(disableBuilder = true))
-//TODO
-@Mapper(builder = @Builder(disableBuilder = true))
+@Mapper(componentModel ="spring", builder = @Builder(disableBuilder = true))
 public interface InvitedGuestMapper {
 
     InvitedGuestDto mapTo(InvitedGuestEntity invitedGuestEntity);

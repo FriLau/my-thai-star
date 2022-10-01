@@ -31,8 +31,6 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
     /**
      * @return booking
      */
-//    @ManyToOne(fetch = FetchType.EAGER)
-    //TODO
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bookingId")
     public BookingEntity getBooking() {
