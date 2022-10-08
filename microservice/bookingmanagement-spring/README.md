@@ -15,17 +15,8 @@ The application can be packaged using:
 ```shell script
 ./mvnw package
 ```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/bookingmanagement-spring-0.0.1-SNAPSHOT.jar`.
 
 ## Creating a native executable
 
@@ -39,4 +30,24 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/bookingmanagement-quarkus-1.0.0-SNAPSHOT-runner`
+You can then execute your native executable with: `./target/bookingmanagement-spring-1.0.0-SNAPSHOT-runner`
+
+## Docker Images
+
+To create docker images from this project, you first need to package the project:
+
+```shell script
+./mvnw package 
+```
+
+Now you can create the Docker Image using:
+
+```shell script
+docker build -f src/main/docker/Dockerfile.jvm -t springio/bookingmanagement-spring-jvm .
+```
+
+After you created the Docker Image, you can run it in a container using:
+
+```shell script
+docker run -i --rm -p 8080:8080 springio/bookingmanagement-spring-jvm
+```

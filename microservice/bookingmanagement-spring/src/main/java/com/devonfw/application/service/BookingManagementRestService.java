@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -33,6 +32,8 @@ import static javax.ws.rs.core.Response.status;
 // Add native (/)
 // Remove Tests (/)
 // ReadMe
+// Docker Image (/)
+// native Image
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RequestMapping("/booking-management/v1")
@@ -90,11 +91,12 @@ public class BookingManagementRestService {
     public Response saveBooking(@RequestBody BookingDto booking)
     {
         BookingDto bookingDto = this.bookingManagement.createBooking(booking);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path(bookingDto.getId().toString())
-                .build()
-                .toUri();
+//        URI uri = ServletUriComponentsBuilder
+//                .fromCurrentContextPath()
+//                .path(bookingDto.getId().toString())
+//                .build()
+//                .toUri();
+        URI uri = URI.create("/booking-management/v1" + "/booking/" + bookingDto.getId());
         return created(uri).build();
     }
 
@@ -153,11 +155,12 @@ public class BookingManagementRestService {
     public Response saveInvitedGuest(@RequestBody InvitedGuestDto invitedGuest)
     {
         InvitedGuestDto invitedGuestDto = this.bookingManagement.saveInvitedGuest(invitedGuest);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path(invitedGuestDto.getId().toString())
-                .build()
-                .toUri();
+//        URI uri = ServletUriComponentsBuilder
+//                .fromCurrentContextPath()
+//                .path(invitedGuestDto.getId().toString())
+//                .build()
+//                .toUri();
+        URI uri = URI.create("/booking-management/v1" + "/invited-guest/" + invitedGuestDto.getId());
         return created(uri).build();
     }
 
@@ -250,11 +253,12 @@ public class BookingManagementRestService {
     public Response saveTable(@RequestBody TableDto table)
     {
         TableDto tableDto = this.bookingManagement.saveTable(table);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path(tableDto.getId().toString())
-                .build()
-                .toUri();
+//        URI uri = ServletUriComponentsBuilder
+//                .fromCurrentContextPath()
+//                .path(tableDto.getId().toString())
+//                .build()
+//                .toUri();
+        URI uri = URI.create("/booking-management/v1" + "/table/" + tableDto.getId());
         return created(uri).build();
     }
 

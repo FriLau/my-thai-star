@@ -34,10 +34,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-// TODO
-// Json Instant conversion bug
-// Repository Fragment Bug
-// ReadMe
 @Singleton
 @Transactional
 public class BookingManagementImpl implements BookingManagement{

@@ -31,3 +31,7 @@ flyway:
       enabled: true
       locations:
         - db/migration
+
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false

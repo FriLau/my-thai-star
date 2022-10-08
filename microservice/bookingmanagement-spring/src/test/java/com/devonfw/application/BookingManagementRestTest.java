@@ -1,26 +1,9 @@
 package com.devonfw.application;
 
 
-import com.devonfw.application.domain.model.BookingType;
-import com.devonfw.application.service.model.BookingDto;
-import com.devonfw.application.service.model.InvitedGuestDto;
-import com.devonfw.application.service.model.TableDto;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.ws.rs.core.MediaType;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
-import static io.restassured.RestAssured.given;
-import static javax.ws.rs.core.Response.Status.CREATED;
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
-import static javax.ws.rs.core.Response.Status.OK;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

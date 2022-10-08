@@ -27,6 +27,12 @@ import java.util.List;
 import static io.micronaut.http.HttpStatus.FORBIDDEN;
 import static io.micronaut.http.HttpStatus.NO_CONTENT;
 
+// TODO
+// Json Instant conversion bug
+// Repository Fragment Bug
+// ReadMe
+// Docker Image
+// native Image
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Controller(value = "/booking-management/v1")
@@ -78,7 +84,8 @@ public class BookingManagementRestService {
     public HttpResponse saveBooking(BookingDto booking)
     {
         BookingDto bookingDto = this.bookingManagement.createBooking(booking);
-        URI uri = UriBuilder.of("/booking-management/v1" + "/booking/" + bookingDto.getId()).build();
+//        URI uri = UriBuilder.of("/booking-management/v1" + "/booking/" + bookingDto.getId()).build();
+        URI uri = URI.create("/booking-management/v1" + "/booking/" + bookingDto.getId());
         return HttpResponse.redirect(uri);
     }
 
@@ -137,7 +144,8 @@ public class BookingManagementRestService {
     public HttpResponse saveInvitedGuest(InvitedGuestDto invitedGuest)
     {
         InvitedGuestDto invitedGuestDto = this.bookingManagement.saveInvitedGuest(invitedGuest);
-        URI uri = UriBuilder.of("/booking-management/v1" + "/invited-guest/" + invitedGuestDto.getId()).build();
+//        URI uri = UriBuilder.of("/booking-management/v1" + "/invited-guest/" + invitedGuestDto.getId()).build();
+        URI uri = URI.create("/booking-management/v1" + "/invited-guest/" + invitedGuestDto.getId());
         return HttpResponse.redirect(uri);
     }
 
@@ -230,7 +238,8 @@ public class BookingManagementRestService {
     public HttpResponse saveTable(TableDto table)
     {
         TableDto tableDto = this.bookingManagement.saveTable(table);
-        URI uri = UriBuilder.of("/booking-management/v1" + "/table/" + tableDto.getId()).build();
+//        URI uri = UriBuilder.of("/booking-management/v1" + "/table/" + tableDto.getId()).build();
+        URI uri = URI.create("/booking-management/v1" + "/table/" + tableDto.getId());
         return HttpResponse.redirect(uri);
     }
 

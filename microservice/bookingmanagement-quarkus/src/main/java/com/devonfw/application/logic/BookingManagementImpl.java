@@ -20,14 +20,9 @@ import com.devonfw.application.service.rest.model.TableSearchCriteriaDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -41,9 +36,6 @@ import java.util.Optional;
 @ApplicationScoped
 public class BookingManagementImpl implements BookingManagement{
     private static final Logger LOG = LoggerFactory.getLogger(BookingManagementRestService.class);
-
-    @Context
-    UriInfo uriInfo;
 
     @Inject
     BookingRepository bookingRepository;

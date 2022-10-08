@@ -26,16 +26,19 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import java.net.URI;
 import java.util.List;
 
 import static javax.ws.rs.core.Response.created;
 import static javax.ws.rs.core.Response.status;
 
 // TODO
-// Remove Repository Fragment + Remove Rest Functions
+// Remove Repository Fragment + Remove Rest Functions (/)
 // Add native (/)
 // Remove Tests (/)
 // ReadMe
+// Docker Image
+// native Image
 @Path("/booking-management/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -95,8 +98,10 @@ public class BookingManagementRestService {
     public Response saveBooking(BookingDto booking)
     {
         BookingDto bookingDto = this.bookingManagement.createBooking(booking);
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(bookingDto.getId()));
-        return created(uriBuilder.build()).build();
+//        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(bookingDto.getId()));
+//        return created(uriBuilder.build()).build();
+        URI uri = URI.create("/booking-management/v1" + "/booking/" + bookingDto.getId());
+        return created(uri).build();
     }
 
     /**
@@ -158,8 +163,10 @@ public class BookingManagementRestService {
     public Response saveInvitedGuest(InvitedGuestDto invitedGuest)
     {
         InvitedGuestDto invitedGuestDto = this.bookingManagement.saveInvitedGuest(invitedGuest);
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(invitedGuestDto.getId()));
-        return created(uriBuilder.build()).build();
+//        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(invitedGuestDto.getId()));
+//        return created(uriBuilder.build()).build();
+        URI uri = URI.create("/booking-management/v1" + "/invited-guest/" + invitedGuestDto.getId());
+        return created(uri).build();
     }
 
     /**
@@ -258,8 +265,10 @@ public class BookingManagementRestService {
     public Response saveTable(TableDto table)
     {
         TableDto tableDto = this.bookingManagement.saveTable(table);
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(tableDto.getId()));
-        return created(uriBuilder.build()).build();
+//        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder().path(Long.toString(tableDto.getId()));
+//        return created(uriBuilder.build()).build();
+        URI uri = URI.create("/booking-management/v1" + "/table/" + tableDto.getId());
+        return created(uri).build();
     }
 
     /**
