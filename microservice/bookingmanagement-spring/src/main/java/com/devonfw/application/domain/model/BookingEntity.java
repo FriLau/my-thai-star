@@ -4,6 +4,7 @@ import com.devonfw.application.general.model.ApplicationPersistenceEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -35,6 +36,7 @@ public class BookingEntity extends ApplicationPersistenceEntity {
 
     private String email;
 
+    @Column(nullable = false, columnDefinition = "bool", length = 1)
     private Boolean canceled;
 
     private BookingType bookingType;
@@ -53,71 +55,4 @@ public class BookingEntity extends ApplicationPersistenceEntity {
     @Min(value = 1, message = "Assistants must be greater than 0")
     @Digits(integer = 2, fraction = 0)
     private Integer assistants;
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public String getBookingToken() {
-//        return bookingToken;
-//    }
-//
-//    public String getComment() {
-//        return comment;
-//    }
-//
-//    public Instant getBookingDate() {
-//        return bookingDate;
-//    }
-//
-//    public Instant getExpirationDate() {
-//        return expirationDate;
-//    }
-//
-//    public Instant getCreationDate() {
-//        return creationDate;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public Boolean getCanceled() {
-//        return canceled;
-//    }
-//
-//    public BookingType getBookingType() {
-//        return bookingType;
-//    }
-//
-//    /**
-//     * @return table
-//     */
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "tableId")
-//    public TableEntity getTable() {
-//
-//        return this.table;
-//    }
-//
-//    public Long getOrderId() {
-//        return orderId;
-//    }
-//
-//    public Long getUserId() {
-//        return userId;
-//    }
-//
-//    /**
-//     * @return invitedGuests
-//     */
-//    @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)
-//    public List<InvitedGuestEntity> getInvitedGuests() {
-//
-//        return this.invitedGuests;
-//    }
-//
-//    public Integer getAssistants() {
-//        return assistants;
-//    }
 }

@@ -42,10 +42,23 @@
 			<version>0.12.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.experimental</groupId>
+			<artifactId>spring-aot</artifactId>
+			<version>0.10.0</version>
+		</dependency>
+
 		<!--		H2 dependency-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!--	PostgreSQL dependency		-->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -112,6 +125,12 @@
 <!--					<jvmArguments>-->
 <!--						-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005-->
 <!--					</jvmArguments>-->
+					<image>
+						<builder>paketobuildpacks/builder:tiny</builder>
+						<env>
+							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+						</env>
+					</image>
 				</configuration>
 			</plugin>
 
@@ -125,12 +144,6 @@
 						<id>generate</id>
 						<goals>
 							<goal>generate</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>test-generate</id>
-						<goals>
-							<goal>test-generate</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -238,21 +251,12 @@
 	<profiles>
 		<profile>
 			<id>native</id>
-			<dependencies>
-				<!-- Required with Maven Surefire 2.x -->
-				<dependency>
-					<groupId>org.junit.platform</groupId>
-					<artifactId>junit-platform-launcher</artifactId>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.graalvm.buildtools</groupId>
 						<artifactId>native-maven-plugin</artifactId>
 						<version>0.9.13</version>
-						<extensions>true</extensions>
 						<executions>
 							<execution>
 								<id>build-native</id>
@@ -261,19 +265,8 @@
 								</goals>
 								<phase>package</phase>
 							</execution>
-							<execution>
-								<id>test-native</id>
-								<goals>
-									<goal>test</goal>
-								</goals>
-								<phase>test</phase>
-							</execution>
 						</executions>
-						<configuration>
-							<!-- ... -->
-						</configuration>
 					</plugin>
-					<!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
 						<artifactId>spring-boot-maven-plugin</artifactId>
@@ -285,5 +278,55 @@
 			</build>
 		</profile>
 	</profiles>
+<!--	<profiles>-->
+<!--		<profile>-->
+<!--			<id>native</id>-->
+<!--			<dependencies>-->
+<!--				&lt;!&ndash; Required with Maven Surefire 2.x &ndash;&gt;-->
+<!--				<dependency>-->
+<!--					<groupId>org.junit.platform</groupId>-->
+<!--					<artifactId>junit-platform-launcher</artifactId>-->
+<!--					<scope>test</scope>-->
+<!--				</dependency>-->
+<!--			</dependencies>-->
+<!--			<build>-->
+<!--				<plugins>-->
+<!--					<plugin>-->
+<!--						<groupId>org.graalvm.buildtools</groupId>-->
+<!--						<artifactId>native-maven-plugin</artifactId>-->
+<!--						<version>0.9.13</version>-->
+<!--						<extensions>true</extensions>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<id>build-native</id>-->
+<!--								<goals>-->
+<!--									<goal>build</goal>-->
+<!--								</goals>-->
+<!--								<phase>package</phase>-->
+<!--							</execution>-->
+<!--							<execution>-->
+<!--								<id>test-native</id>-->
+<!--								<goals>-->
+<!--									<goal>test</goal>-->
+<!--								</goals>-->
+<!--								<phase>test</phase>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--						<configuration>-->
+<!--							&lt;!&ndash; ... &ndash;&gt;-->
+<!--						</configuration>-->
+<!--					</plugin>-->
+<!--					&lt;!&ndash; Avoid a clash between Spring Boot repackaging and native-maven-plugin &ndash;&gt;-->
+<!--					<plugin>-->
+<!--						<groupId>org.springframework.boot</groupId>-->
+<!--						<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--						<configuration>-->
+<!--							<classifier>exec</classifier>-->
+<!--						</configuration>-->
+<!--					</plugin>-->
+<!--				</plugins>-->
+<!--			</build>-->
+<!--		</profile>-->
+<!--	</profiles>-->
 
 </project>

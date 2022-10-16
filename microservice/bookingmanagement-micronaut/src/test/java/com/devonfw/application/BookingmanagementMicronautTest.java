@@ -10,12 +10,12 @@ import jakarta.inject.Inject;
 @MicronautTest
 class BookingmanagementMicronautTest {
 
-    @Inject
-    EmbeddedApplication<?> application;
-
-    @Test
-    void testItWorks() {
-        Assertions.assertTrue(application.isRunning());
-    }
+//    @Inject
+//    EmbeddedApplication<?> application;
+//
+//    @Test
+//    void testItWorks() {
+//        Assertions.assertTrue(application.isRunning());
+//    }
 
 }

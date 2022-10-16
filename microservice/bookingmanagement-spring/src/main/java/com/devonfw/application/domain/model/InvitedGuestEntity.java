@@ -4,6 +4,7 @@ import com.devonfw.application.general.model.ApplicationPersistenceEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -26,6 +27,7 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
 
     private String email;
 
+    @Column(nullable = false, columnDefinition = "bool", length = 1)
     private Boolean accepted;
 
     private Instant modificationDate;
@@ -36,36 +38,6 @@ public class InvitedGuestEntity extends ApplicationPersistenceEntity {
 
         super();
     }
-
-//    /**
-//     * @return booking
-//     */
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "bookingId")
-//    public BookingEntity getBooking() {
-//
-//        return this.booking;
-//    }
-//
-//    public String getGuestToken() {
-//        return guestToken;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public Boolean getAccepted() {
-//        return accepted;
-//    }
-//
-//    public Instant getModificationDate() {
-//        return modificationDate;
-//    }
-//
-//    public Long getOrderId() {
-//        return orderId;
-//    }
 
     @Transient
     public Long getBookingId()

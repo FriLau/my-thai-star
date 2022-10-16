@@ -22,7 +22,7 @@ public abstract class ApplicationPersistenceEntity {
 
     /** @see #getId() */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator="HIBERNATE_SEQUENCE")
     private Long id;
 
     /** @see #getModificationCounter() */

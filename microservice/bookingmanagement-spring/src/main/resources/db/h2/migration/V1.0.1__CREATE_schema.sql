@@ -1,7 +1,7 @@
 CREATE SEQUENCE HIBERNATE_SEQUENCE START WITH 100000;
 
 -- *** Table ***
-CREATE TABLE "Table" (
+CREATE TABLE TableEntity (
   id BIGINT NOT NULL AUTO_INCREMENT,
   modificationCounter INTEGER NOT NULL,
   seatsNumber INTEGER NOT NULL,
@@ -20,13 +20,13 @@ CREATE TABLE Booking (
   bookingDate TIMESTAMP NOT NULL,
   expirationDate TIMESTAMP,
   creationDate TIMESTAMP,
-  canceled BOOLEAN NOT NULL DEFAULT ((0)) ,
+  canceled BOOLEAN NOT NULL DEFAULT ((false)) ,
   bookingType INTEGER,
   tableId BIGINT,
   orderId BIGINT,
   assistants INTEGER,
   CONSTRAINT PK_Booking PRIMARY KEY(id),
-  CONSTRAINT FK_Booking_tableId FOREIGN KEY(tableId) REFERENCES "Table"(id) NOCHECK
+  CONSTRAINT FK_Booking_tableId FOREIGN KEY(tableId) REFERENCES TableEntity(id) NOCHECK
 );
 
 -- *** InvitedGuest ***

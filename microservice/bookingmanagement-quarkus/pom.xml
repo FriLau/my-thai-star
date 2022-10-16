@@ -61,6 +61,12 @@
       <artifactId>quarkus-jdbc-h2</artifactId>
     </dependency>
 
+<!--    PostgreSQL dependencies-->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jdbc-postgresql</artifactId>
+    </dependency>
+
 <!--    Flyway dependencies-->
     <dependency>
       <groupId>io.quarkus</groupId>

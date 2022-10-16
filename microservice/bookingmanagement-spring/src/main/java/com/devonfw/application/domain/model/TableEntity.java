@@ -10,12 +10,9 @@ import javax.persistence.Table;
 @Entity
 @Setter
 @Getter
-@Table(name = "\"Table\"")
+@Table(name = "TableEntity")
 public class TableEntity extends ApplicationPersistenceEntity {
 
     private Integer seatsNumber;
 
-//    public Integer getSeatsNumber() {
-//        return seatsNumber;
-//    }
 }
