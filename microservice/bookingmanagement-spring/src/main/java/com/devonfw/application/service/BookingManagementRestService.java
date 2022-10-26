@@ -27,13 +27,6 @@ import java.util.List;
 import static javax.ws.rs.core.Response.created;
 import static javax.ws.rs.core.Response.status;
 
-// TODO
-// Remove Repository Fragment + Remove Rest Functions (/)
-// Add native (/)
-// Remove Tests (/)
-// ReadMe
-// Docker Image (/)
-// native Image
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RequestMapping("/booking-management/v1")

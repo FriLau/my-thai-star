@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.devonfw.application</groupId>
 	<artifactId>bookingmanagement-spring</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>bookingmanagement-spring</name>
 	<description>Bookingmanagement project for Spring Boot</description>
 

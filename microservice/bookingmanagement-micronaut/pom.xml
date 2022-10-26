@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.devonfw.application</groupId>
   <artifactId>bookingmanagement-micronaut</artifactId>
-  <version>0.1</version>
+  <version>1.0</version>
   <packaging>${packaging}</packaging>
 
   <parent>
@@ -19,7 +19,7 @@
     <release.version>11</release.version>
     <micronaut.version>3.7.0</micronaut.version>
     <micronaut.runtime>netty</micronaut.runtime>
-    <exec.mainClass>com.devonfw.application.Application</exec.mainClass>
+    <exec.mainClass>com.devonfw.application.BookingmanagementMicronautApplication</exec.mainClass>
     <querydsl.version>5.0.0</querydsl.version>
     <mapstruct.version>1.4.2.Final</mapstruct.version>
   </properties>
@@ -59,7 +59,6 @@
       <scope>compile</scope>
     </dependency>
 
-
     <dependency>
       <groupId>io.micronaut.data</groupId>
       <artifactId>micronaut-data-spring-jpa</artifactId>
@@ -70,32 +69,6 @@
       <artifactId>micronaut-jdbc-hikari</artifactId>
       <scope>compile</scope>
     </dependency>
-
-    <!--    <dependency>-->
-    <!--      <groupId>io.micronaut.data</groupId>-->
-    <!--      <artifactId>micronaut-data-hibernate-jpa</artifactId>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>io.micronaut.data</groupId>-->
-    <!--      <artifactId>micronaut-data-spring</artifactId>-->
-    <!--      <version>3.8.0</version>-->
-    <!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>jakarta.persistence</groupId>-->
-<!--      <artifactId>jakarta.persistence-api</artifactId>-->
-<!--      <version>2.2.3</version>-->
-<!--      <scope>compile</scope>-->
-<!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>org.springframework</groupId>-->
-    <!--      <artifactId>spring-orm</artifactId>-->
-    <!--      <version>5.2.0.RELEASE</version>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>io.micronaut.sql</groupId>-->
-    <!--      <artifactId>micronaut-hibernate-jpa</artifactId>-->
-    <!--      <scope>compile</scope>-->
-    <!--    </dependency>-->
 
     <dependency>
       <groupId>jakarta.annotation</groupId>

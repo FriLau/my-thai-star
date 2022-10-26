@@ -27,12 +27,7 @@ import java.util.List;
 import static io.micronaut.http.HttpStatus.FORBIDDEN;
 import static io.micronaut.http.HttpStatus.NO_CONTENT;
 
-// TODO
-// Json Instant conversion bug
-// Repository Fragment Bug
-// ReadMe
-// Docker Image
-// native Image
+
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Controller(value = "/booking-management/v1")

@@ -1,43 +1,47 @@
 #PostgreSQL Start
-flyway:
-  datasources:
-    default:
-      enabled: false
-#      enable: true
-      locations:
-        - db/postgreSQL/migration
-
-datasources:
-  default:
-    url: 'jdbc:postgresql://localhost:5432/bookingmanagment'
-    username: 'postgres'
-    password: 'demo'
-    driverClassName: 'org.postgresql.Driver'
-#PostgreSQL End
-
-# H2 Start
 #flyway:
 #  datasources:
 #    default:
-#      enabled: true
+#      enabled: false
+##      enable: true
 #      locations:
-#        - db/h2/migration
+#        - db/postgreSQL/migration
 #
 #datasources:
 #  default:
-#    url: 'jdbc:h2:mem:myDB'
-#    username: 'demo'
+#    url: 'jdbc:postgresql://localhost:5432/bookingmanagment'
+#    username: 'postgres'
 #    password: 'demo'
-#    driverClassName: 'org.h2.Driver'
+#    driverClassName: 'org.postgresql.Driver'
+#PostgreSQL End
+
+# H2 Start
+flyway:
+  datasources:
+    default:
+      enabled: true
+      locations:
+        - db/h2/migration
+
+datasources:
+  default:
+    url: 'jdbc:h2:mem:myDB'
+    username: 'demo'
+    password: 'demo'
+    driverClassName: 'org.h2.Driver'
 # H2 End
 
 micronaut:
   application:
     name: bookingmanagementMicronaut
+  aot:
+    enabled: true
+    packageName: 'bookingmangment'
 netty:
   default:
     allocator:
       max-order: 3
+
 
 jpa:
   default:

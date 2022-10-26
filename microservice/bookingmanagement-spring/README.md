@@ -27,6 +27,11 @@ docker run --name dev-postgres -p 5432:5432 -e POSTGRES_PASSWORD=demo -d postgre
 docker exec dev-postgres psql -U postgres -c"CREATE DATABASE bookingmanagment" postgres
 ```
 
+To remove the Database:
+```shell script
+docker exec dev-postgres psql -U postgres -c"DROP DATABASE bookingmanagment" postgres
+```
+
 ## Running the application in dev mode
 
 You can run your application using:
@@ -41,7 +46,7 @@ The application can be packaged using:
 ./mvnw package
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/bookingmanagement-spring-0.0.1-SNAPSHOT.jar`.
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/bookingmanagement-spring-1.0.jar`.
 
 ## Docker Images
 

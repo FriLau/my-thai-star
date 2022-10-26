@@ -41,7 +41,7 @@ The application can be packaged using:
 ./mvnw package
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/bookingmanagement-spring-0.0.1-SNAPSHOT.jar`.
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/bookingmanagement-micronaut-1.0.jar`.
 
 ## Docker Images
 
@@ -67,7 +67,7 @@ docker run -i --rm -p 8080:8080 micronaut/bookingmanagement-micronaut-jvm
 
 You can create a native executable using:
 ```shell script
-./mvnw clean -Pnative -DskipTests package
+./mvnw clean -Dpackaging=native-image -DskipTests package
 ```
 
 You can then execute your native executable with: `./target/bookingmanagement-micronaut`
